@@ -1,0 +1,120 @@
+html, body, ul, li {
+	margin: 0;
+	padding: 0;
+}
+html, body, #root, .container {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	font-family: "微软雅黑";
+}
+.container {
+	min-width: 1160px;
+	overflow: hidden;
+	background: -webkit-radial-gradient(top, #0098A6, #000);
+	background: -moz-radial-gradient(top, #0098A6, #000);
+}
+a {
+	cursor: pointer;
+	color: inherit;
+	text-decoration: none;
+}
+i, em {
+	display: block;
+	font-style: normal;
+}
+.show {
+	display: block!important;
+}
+@keyframes bundle {
+	0% {
+		transform: rotate(20deg);
+	}
+	40% {
+		transform: rotate(-5deg);
+	}
+	70% {
+		transform: rotate(1deg);
+	}
+	100% {
+		transform: rotate(0);
+	}
+}
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+
+/* -----------    页面   ------------ */
+.maintain {
+	$min-width: 650px;
+	$max-width: 800px;
+	width: 60%;
+	height: 90%;
+	min-width: $min-width;
+	max-width: $max-width;
+	margin: 0 auto;
+	position: relative;
+	text-align: center;
+	img.album, canvas, .filter {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+	}
+	img.album {
+		width: $min-width;
+		margin-left: -$min-width / 2;
+		margin-top: -$min-width / 2;
+		// background-color: rgba(0, 0, 0, 0.8);
+		// opacity: 0.3;
+		&.slide-in {
+			animation: bundle 0.6s;
+		}
+	}
+	div.filter {
+		width: $min-width;
+		height: $min-width;
+		margin-left: -$min-width / 2;
+		margin-top: -$min-width / 2;
+		animation: fadein 2s;
+		background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5));
+		background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5));
+	}
+	canvas {
+		width: $min-width - 20px;
+		height: $min-width - 20px;
+		margin-left: -$min-width / 2 + 10px;
+		margin-top: -$min-width / 2 + 10px;
+	}
+}
+
+/**/
+.drag-component {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	background: rgba(0, 0, 0, 0.7);
+	input {
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+}
+.aside {
+	position: absolute;
+	height: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	top: 0;
+	color: #aaa;
+	transition: 0.6s all;
+	background: rgba(0, 0, 0, 0);
+}
