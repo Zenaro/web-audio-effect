@@ -32,19 +32,21 @@
 			}
 		}
 	}
-	ul > li.active {
-		border: solid 2px rgba(26, 198, 217, 0.8);
-	}
-	ul > li > a {
-		padding: 5px 10px;
+	ul > li {
 		border: solid 2px rgba(26, 198, 217, 0);
-		border-radius: 4px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		display: block;
-		&.active, &:hover { 
-			color: #fff;
+		&.active {
+			border: solid 2px rgba(26, 198, 217, 0.8);
+		}
+		> a {
+			padding: 5px 10px;
+			border-radius: 4px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			display: block;
+			&.active, &:hover { 
+				color: #fff;
+			}
 		}
 	}
 	.empty {
