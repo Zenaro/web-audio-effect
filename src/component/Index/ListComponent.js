@@ -10,7 +10,6 @@ export default class ListComponent extends Component {
 		// this.state = {
 		// 	isLayin: props.isLayin
 		// };
-		// this.handleTouch = this.handleTouch.bind(this);
 	}
 	componentDidMount() {
 		// console.log(this.props.isLayin);
@@ -27,9 +26,7 @@ export default class ListComponent extends Component {
 		// }));
 	}
 	handleTouch(index) {
-		// this.props.restart(index);
-		// console.log(index);
-		console.log('2');
+		this.props.restart(index);
 	}
 	render() {
 		let className = 'list-component aside ';
@@ -45,7 +42,7 @@ export default class ListComponent extends Component {
 				</a>
 				<ul>
 					{this.props.items.map((item, index) => {
-						return <li key={index} className={this.props.sign === index ? 'active' : ''} onClick={this.handleTouch(index)}>
+						return <li key={index} className={this.props.sign === index ? 'active' : ''} onDoubleClick={this.handleTouch.bind(this, index)}>
 									<a href="javascript:void(0)">
 										{item.title}
 									</a>
