@@ -11,8 +11,6 @@ import List from './ListComponent';
 import Effect from './EffectComponent';
 import Player from './PlayerComponent';
 
-// -------------------------------web base64 高斯模糊--------------------------
-
 AudioCtx.init();
 const Audio = AudioCtx.getAudio();
 const AudioAnalyser = AudioCtx.getAnalyser();
@@ -29,11 +27,37 @@ export default class App extends Component {
 			sign: 0,
 			isDragEnter: false,
 			isPicReady: false,
+			isLayinList: false,
+			isLayinEffect: false
 		}
 		this.restart = this.restart.bind(this);
+		this.isSlide = this.isSlide.bind(this);
+		this.onDragModal = this.onDragModal.bind(this);
+		this.offDragModal = this.offDragModal.bind(this);
+		this.filesChange = this.filesChange.bind(this);
 	}
 	componentDidMount() {
 		CanvasCtx.init(AudioAnalyser, this.DOMCanvas);
+		this.setState({
+			isLayinList: true,
+			isLayinEffect: true
+		})
+	}
+	stop(event) {
+		event.stopPropagation();
+	}
+	isSlide() {
+		if (this.state.isLayinList && this.state.isLayinEffect) {
+			this.setState({
+				isLayinList: false,
+				isLayinEffect: false
+			});
+		} else {
+			this.setState({
+				isLayinList: true,
+				isLayinEffect: true
+			});
+		}
 	}
 	onDragModal() {
 		this.setState({
@@ -49,6 +73,9 @@ export default class App extends Component {
 		});
 	}
 	filesChange(event) {
+		this.setState({
+			isDragEnter: false
+		});
 		let files = event.target.files;
 		let newFileList = [];
 
@@ -64,16 +91,26 @@ export default class App extends Component {
 			});
 		}
 
+		let originLength = this.state.FileList.length;
 		// setState 是异步的，Attention
 		this.setState((prevState) => ({
 			FileList: prevState.FileList.concat(newFileList)
 		}), () => {
+			let index = 0,
+				newLength = this.state.FileList.length;
+			if (originLength == 0 && newLength > 0) {
+				this.restart(0);
+				CanvasCtx.drawRect();
 
-			this.restart(this.state.FileList.length - 1);
-			CanvasCtx.drawRect();
+			} else if (originLength && originLength < newLength) {
+				index = originLength;
+				this.restart(originLength);
+				CanvasCtx.drawRect();
 
+			} else {
+				alert('The files you dragged may no be the audio');
+			}
 		});
-
 	}
 	restart(index) {
 		let title = this.state.FileList[index].title,
@@ -125,11 +162,13 @@ export default class App extends Component {
 	}
 	render() {
 		return (
-			<div className="container">
+			<div className="container" onClick={this.isSlide}>
         		{/*<List sign={this.state.sign} items={this.state.FileList} restart={this.restart}/>*/}
-        		<List sign={this.state.sign} items={this.state.FileList} restart={this.restart}/>
-        		<Effect AudioCtx={AudioCtx}/>
-        		<div className="maintain" onDragEnter={this.onDragModal.bind(this)}>
+        		<List sign={this.state.sign} items={this.state.FileList} 
+        			restart={this.restart} isLayin={this.state.isLayinList}
+        		/>
+        		<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}/>
+        		<div className="maintain" onDragEnter={this.onDragModal}>
         			{this.state.album && 
 						<img src={this.state.album} className={this.state.isPicReady ? 
 							"album slide-in": "album"} alt="album"/>
@@ -139,10 +178,11 @@ export default class App extends Component {
 					}
 		    		<canvas ref={(canvas) => {this.DOMCanvas = canvas}}></canvas>
 				</div>
-				<div className={this.state.isDragEnter ? 'drag-component show' : 'drag-component'} onDragOver={(e) => this.onDragover(e)} onDrop={this.offDragModal.bind(this)}>
-		        	<input type="file" multiple="multiple" onChange={this.filesChange.bind(this)}/>
+				<div className={this.state.isDragEnter ? 'drag-component show' : 'drag-component'} 
+					onDragOver={this.onDragover} onDrop={this.offDragModal} onClick={this.stop}>
+		        	<input type="file" multiple="multiple" onChange={this.filesChange}/>
 				</div>
-				<Player audio={this.audio} audioCtx={AudioCtx}
+				<Player audio={this.audio} audioCtx={AudioCtx} offDragModal={this.offDragModal}
 						album={this.state.album} title={this.state.title} artist={this.state.artist}
 						sign={this.state.sign} listLength={this.state.FileList.length}
 						restart={this.restart}

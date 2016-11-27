@@ -5,7 +5,9 @@
 	// 右侧呼出功能按钮
 	a.btn-func {	
 		display: block;
-		margin-left: 10px;
+		position: absolute;
+		right: 26px;
+		top: 26px;
 	}
 	&.slide-in {
 		transform: translateX(-$size);

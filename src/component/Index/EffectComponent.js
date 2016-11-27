@@ -8,7 +8,7 @@ export default class EffectComponent extends Component {
 		super(props);
 		this.state = {
 			index: 0,
-			isAsideEffect: true,
+			// isAsideEffect: true,
 			ProWidth: 190, // 进度条长度 
 			lowpassHz: 800, // 默认800Hz
 			highpassHz: 800, // 默认800Hz
@@ -40,9 +40,9 @@ export default class EffectComponent extends Component {
 		// event.nativeEvent.stopImmediatePropagation();
 	}
 	switchEffect() {
-		this.setState((prevState) => ({
-			isAsideEffect: !prevState.isAsideEffect
-		}));
+		// this.setState((prevState) => ({
+		// 	isAsideEffect: !prevState.isAsideEffect
+		// }));
 	}
 	reset() {
 		this.setState({
@@ -138,11 +138,11 @@ export default class EffectComponent extends Component {
 	}
 	render() {
 		let className = 'effect-component aside ';
-		this.state.isAsideEffect ?
+		this.props.isLayin ?
 			className += 'slide-in' :
 			className += 'slide-out';
 		return (
-			<div className={className}>
+			<div className={className} onClick={this.stop}>
 				<a href="javascript:void(0)" className="btn-func" onClick={this.switchEffect}>
 					<i className="icon-effect">❔</i>
 				</a>

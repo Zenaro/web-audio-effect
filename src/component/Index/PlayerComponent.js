@@ -37,7 +37,7 @@ export default class PlayerComponent extends Component {
 			}],
 		}
 		this.Audio = props.audio;
-
+		this.stop = this.stop.bind(this);
 		this.prevTrack = this.prevTrack.bind(this);
 		this.nextTrack = this.nextTrack.bind(this);
 		this.switchPlay = this.switchPlay.bind(this);
@@ -102,6 +102,7 @@ export default class PlayerComponent extends Component {
 		}
 	}
 	stop(event) {
+		this.props.offDragModal();
 		event.stopPropagation();
 	}
 	prevent(event) {
@@ -249,7 +250,7 @@ export default class PlayerComponent extends Component {
 	}
 	render() {
 		return (
-			<div className="audio-player">
+			<div className="audio-player" onClick={this.stop}>
 				<div className="audio-player-core">
 					<div className="play-btns">
 						<a href="javascript:void(0);" className="prv" onClick={this.prevTrack} 

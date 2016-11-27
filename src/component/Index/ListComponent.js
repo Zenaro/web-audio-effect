@@ -7,20 +7,24 @@ import '../../style/index/list.scss';
 export default class ListComponent extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			isAsideList: false
-		};
+		// this.state = {
+		// 	isLayin: props.isLayin
+		// };
 		// this.handleTouch = this.handleTouch.bind(this);
 	}
 	componentDidMount() {
-		this.setState({
-			isAsideList: true
-		});
+		// console.log(this.props.isLayin);
+		// this.setState({
+		// 	isLayin: this.props.isLayin
+		// });
+	}
+	stop(event) {
+		event.stopPropagation();
 	}
 	switchList() {
-		this.setState((prevState) => ({
-			isAsideList: prevState.isAsideList
-		}));
+		// this.setState((prevState) => ({
+		// 	isLayin: prevState.isLayin
+		// }));
 	}
 	handleTouch(index) {
 		// this.props.restart(index);
@@ -28,9 +32,15 @@ export default class ListComponent extends Component {
 		// console.log('2');
 	}
 	render() {
+		let className = 'list-component aside ';
+		if (this.props.isLayin) {
+			className += 'slide-in';
+		} else {
+			className += 'slide-out';
+		}
 		return (
-			<div className={this.state.isAsideList ? 'list-component aside slide-in' : 'list-component aside slide-out'}>
-				<a href="javascript:void(0)" className="btn-list" onClick={this.switchList}>
+			<div className={className} onClick={this.stop}>
+				<a href="javascript:void(0)" className="btn-list">
 					<i className="icon-list"></i>
 				</a>
 				<ul>
