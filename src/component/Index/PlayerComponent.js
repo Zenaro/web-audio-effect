@@ -36,8 +36,10 @@ export default class PlayerComponent extends Component {
 				className: 'icon-single'
 			}],
 		}
+		this.isDrag = false;
 		this.Audio = props.audio;
 		this.stop = this.stop.bind(this);
+		this.leave = this.leave.bind(this);
 		this.prevTrack = this.prevTrack.bind(this);
 		this.nextTrack = this.nextTrack.bind(this);
 		this.switchPlay = this.switchPlay.bind(this);
@@ -107,6 +109,11 @@ export default class PlayerComponent extends Component {
 	}
 	prevent(event) {
 		event.preventDefault();
+	}
+	leave(event) {
+		event.stopPropagation();
+		event.preventDefault();
+		this.isDrag = false;
 	}
 	parseClock(num) {
 		let min = ~~(num / 60);
@@ -250,7 +257,7 @@ export default class PlayerComponent extends Component {
 	}
 	render() {
 		return (
-			<div className="audio-player" onClick={this.stop}>
+			<div className="audio-player" onClick={this.stop} onDragLeave={this.leave}>
 				<div className="audio-player-core">
 					<div className="play-btns">
 						<a href="javascript:void(0);" className="prv" onClick={this.prevTrack} 

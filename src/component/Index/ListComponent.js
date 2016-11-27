@@ -29,7 +29,7 @@ export default class ListComponent extends Component {
 	handleTouch(index) {
 		// this.props.restart(index);
 		// console.log(index);
-		// console.log('2');
+		console.log('2');
 	}
 	render() {
 		let className = 'list-component aside ';
