@@ -100,12 +100,12 @@ export default class App extends Component {
 				newLength = this.state.FileList.length;
 			if (originLength == 0 && newLength > 0) {
 				this.restart(0);
-				CanvasCtx.drawRect();
+				// CanvasCtx.drawRect();
 
 			} else if (originLength && originLength < newLength) {
 				index = originLength;
 				this.restart(originLength);
-				CanvasCtx.drawRect();
+				// CanvasCtx.drawRect();
 
 			} else {
 				alert('The files you dragged may no be the audio');
@@ -132,6 +132,7 @@ export default class App extends Component {
 				// 读取的解码后的封面格式为 base64
 				let base64 = "data:" + image.format + ";base64," +
 					window.btoa(base64String);
+				CanvasCtx.drawRect();
 
 				this.setState({
 					title: tags.title,
@@ -161,21 +162,28 @@ export default class App extends Component {
 		AudioCtx.layinSound();
 	}
 	render() {
+		let wrapStyle = 'wrap ';
+		this.state.isPicReady ? 
+			wrapStyle += 'float-in' : wrapStyle;
 		return (
 			<div className="container" onClick={this.isSlide}>
-        		{/*<List sign={this.state.sign} items={this.state.FileList} restart={this.restart}/>*/}
         		<List sign={this.state.sign} items={this.state.FileList} 
         			restart={this.restart} isLayin={this.state.isLayinList}
         		/>
         		<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}/>
         		<div className="maintain" onDragEnter={this.onDragModal}>
-        			{this.state.album && 
-						<img src={this.state.album} className={this.state.isPicReady ? 
-							"album slide-in": "album"} alt="album"/>
-        			}
-					{this.state.isPicReady &&
-						<div className="filter"></div>
-					}
+        			<div className={wrapStyle}>
+						{this.state.album && 
+							<img src={this.state.album} className="album" alt="album"/>
+        				}
+	        			{/*<dl>
+	        				<dd className="node-source">Source</dd>
+	        				<dd className="node-analyser">Analyser</dd>
+	        				<dd className="node-lowpass">lowpass</dd>
+	        				<dd className="node-highpass">highpass</dd>
+	        				<dd className="node-dest">dest</dd>
+	        			</dl>*/}
+        			</div>
 		    		<canvas ref={(canvas) => {this.DOMCanvas = canvas}}></canvas>
 				</div>
 				<div className={this.state.isDragEnter ? 'drag-component show' : 'drag-component'} 

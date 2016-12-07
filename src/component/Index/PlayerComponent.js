@@ -53,6 +53,11 @@ export default class PlayerComponent extends Component {
 		this.lopTypeChange = this.lopTypeChange.bind(this);
 	}
 	componentDidMount() {
+		this.Audio.ondurationchange = () => {
+			this.setState({
+				duration: this.Audio.duration
+			});
+		};
 		this.Audio.onloadstart = () => {
 			// 首次初始化时不作loading处理
 			let flag = this.state.initLoading;

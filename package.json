@@ -83,5 +83,8 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "dependencies": {
+    "stackblur-canvas": "^1.4.0"
   }
 }

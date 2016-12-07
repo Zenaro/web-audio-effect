@@ -18,7 +18,7 @@ let AudioCtxUtil = {
 	analyser: null, // 音频分析器
 	panner: null, // panner实现立体声
 	sec: 0.8, // 音量淡入淡出时长
-	bufferLength: 512, // 频域分析 fft(快速傅里叶变换)的大小,默认调整为 512
+	bufferLength: 256, // 频域分析 fft(快速傅里叶变换)的大小,默认调整为 512
 	init: function() {
 		this.audio = new Audio();
 		this.audioCtx = new(window.AudioContext || window.webkitAudioContext)();
@@ -108,10 +108,7 @@ let AudioCtxUtil = {
 		this.cancelJob();
 		let panner = this.audioCtx.createPanner();
 
-		let gain1 = this.audioCtx.createGain();
-		let gain2 = this.audioCtx.createGain();
-
-		let convolver = this.audioCtx.createConvolver();
+		let gain = this.audioCtx.createGain();
 
 		panner.setOrientation(0, 0, 0, 0, 1, 0);
 		let index = 0,
@@ -122,12 +119,9 @@ let AudioCtxUtil = {
 			index += 1 / 100;
 		}, 16);
 		this.source.connect(panner);
-		gain1.gain.value = 5;
-		panner.connect(gain1);
-		gain1.connect(this.audioCtx.destination);
-
-		convolver.connect(gain2);
-		gain2.connect(this.audioCtx.destination);
+		gain.gain.value = 5;
+		panner.connect(gain);
+		gain.connect(this.audioCtx.destination);
 	},
 
 	/*

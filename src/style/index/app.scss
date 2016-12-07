@@ -1,4 +1,4 @@
-html, body, ul, li {
+html, body, ul, li, dl, dt, dd {
 	margin: 0;
 	padding: 0;
 }
@@ -10,6 +10,7 @@ html, body, #root, .container {
 }
 .container {
 	min-width: 1160px;
+	min-height: 680px;
 	overflow: hidden;
 	background: -webkit-radial-gradient(top, #0098A6, #000);
 	background: -moz-radial-gradient(top, #0098A6, #000);
@@ -26,81 +27,121 @@ i, em {
 .show {
 	display: block!important;
 }
-@keyframes bundle {
-	0% {
-		transform: rotate(20deg);
-	}
-	40% {
-		transform: rotate(-5deg);
-	}
-	70% {
-		transform: rotate(1deg);
-	}
-	100% {
-		transform: rotate(0);
-	}
-}
-@keyframes fadein {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
 
 
 /* -----------    页面   ------------ */
 .maintain {
 	$min-width: 650px;
 	$max-width: 800px;
-	width: 60%;
-	height: 90%;
+	width: 100%;
+	top: 0;
+	bottom: 50px;
 	min-width: $min-width;
-	max-width: $max-width;
-	margin: 0 auto;
-	position: relative;
+	position: absolute;
 	text-align: center;
-	img.album, canvas, .filter {
+	perspective: 700;
+	-moz-perspective: 700; 
+	-webkit-perspective: 700; 
+	.wrap {
 		position: absolute;
 		left: 50%;
 		top: 50%;
-	}
-	img.album {
-		width: $min-width;
-		margin-left: -$min-width / 2;
-		margin-top: -$min-width / 2;
-		// background-color: rgba(0, 0, 0, 0.8);
-		// opacity: 0.3;
-		&.slide-in {
-			animation: bundle 0.6s;
-		}
-	}
-	div.filter {
+		$deg: 45deg;
+		opacity: 0.6;
 		width: $min-width;
 		height: $min-width;
 		margin-left: -$min-width / 2;
-		margin-top: -$min-width / 2;
-		animation: fadein 2s;
-		background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5));
-		background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5));
+		margin-top: -$min-width / 2 - 100px;
+		transform: rotateX($deg);
+		@keyframes floatIn {
+			from {
+				opacity: 0;
+				transform: rotateX($deg) translateZ(-10px);
+			}
+			to {
+				opacity: 0.6;
+				transform: rotateX($deg) translateZ(0);
+			}
+		}
+		&.float-in {
+			animation: floatIn 0.6s;
+		}
+		img {
+			width: 100%;
+			display: block;
+		}
+		/*dl {
+			$cell: 30px;
+			font-size: 30px;
+			$width: 100%;
+			$height: 100%;
+			top: 50px;
+			left: 0;
+			width: $width;
+			height: $height;
+			position: absolute;
+			dd {
+				padding: 6px;
+				position: absolute;
+				cursor: pointer;
+				background: rgba(255, 255, 255, 0.4);
+				&.node-source {
+					left: 44%;
+				}
+				&.node-analyser {
+					top: $cell * 5;
+					left: 3%;
+				}
+				&.node-lowpass {
+					top: $cell * 5;
+					left: 43%;
+				}
+				&.node-highpass {
+					top: $cell * 5;
+					right: 3%;
+				}
+				&.node-dest {
+					top: $cell * 15;
+					left: 46%;
+				}
+			}
+			// dt {
+			// 	@include item(1);
+			// 	top: 48%;
+			// 	left: 48%;
+			// }
+			// dd.stareo {
+			// 	@include item(0.8);
+			// 	top: 0;
+			// 	right: 0;
+			// }
+			// dd.lowpass {
+			// 	@include item(0.8);
+			// 	bottom: 0;
+			// 	left: 0;
+			// }
+		}*/
 	}
 	canvas {
-		width: $min-width - 20px;
-		height: $min-width - 20px;
-		margin-left: -$min-width / 2 + 10px;
-		margin-top: -$min-width / 2 + 10px;
+		$width: 1040px;
+		position: absolute;
+		width: $width;
+		height: 300px;
+		left: 50%;
+		bottom: 10px;
+		margin-left: -$width / 2;
+		// margin-top: -$min-width / 2 + 10px;
 	}
 }
 
 /**/
 .drag-component {
-	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
 	display: none;
+	position: absolute;
 	background: rgba(0, 0, 0, 0.7);
 	input {
 		width: 100%;
@@ -109,12 +150,13 @@ i, em {
 	}
 }
 .aside {
-	position: absolute;
 	height: 100%;
 	padding: 10px;
-	box-sizing: border-box;
+	z-index: 1;
 	top: 0;
 	color: #aaa;
+	position: absolute;
 	transition: 0.6s all;
+	box-sizing: border-box;
 	background: rgba(0, 0, 0, 0);
 }
