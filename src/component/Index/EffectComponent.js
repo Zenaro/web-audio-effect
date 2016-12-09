@@ -31,7 +31,7 @@ export default class EffectComponent extends Component {
 		this.convolver = this.convolver.bind(this);
 		this.delay = this.delay.bind(this);
 		this.splitterMerger = this.splitterMerger.bind(this);
-		this.unknown = this.unknown.bind(this);
+		this.removeVocal = this.removeVocal.bind(this);
 	}
 	componentDidMount() {
 
@@ -106,10 +106,13 @@ export default class EffectComponent extends Component {
 		this.AudioCtx.lowshelfEnhance();
 	}
 	lowshelfWeaken() {
+		this.AudioCtx.lowshelfWeaken();
+	}
+	removeVocal() {
 		this.setState({
 			index: 5
 		});
-		this.AudioCtx.lowshelfWeaken();
+		this.AudioCtx.removeVocal();
 	}
 	waveShaper() {
 		this.setState({
@@ -136,12 +139,6 @@ export default class EffectComponent extends Component {
 			index: 9
 		});
 		this.AudioCtx.splitterMerger();
-	}
-	unknown() {
-		this.setState({
-			index: 10
-		});
-		this.AudioCtx.unknown();
 	}
 	render() {
 		let className = 'effect-component aside ';
@@ -179,9 +176,12 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===4 ? 'active' : ''}>
 						<a href="javascript:void(0)" onClick={this.lowshelfEnhance}>人声增益（82~392Hz）</a>
 					</li>
-					<li className={this.state.index===5 ? 'active' : ''}>
-						<a href="javascript:void(0)" onClick={this.lowshelfWeaken}>人声削弱（82~392Hz）</a>
+					<li className={this.state.index==5 ? 'active' : ''}>
+						<a href="javascript:void(0);" onClick={this.removeVocal}>人声消除</a>
 					</li>
+					{/*<li className={this.state.index===5 ? 'active' : ''}>
+						<a href="javascript:void(0)" onClick={this.lowshelfWeaken}>人声削弱（82~392Hz）</a>
+					</li>*/}
 					<li className={this.state.index===6 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.waveShaper}>波形修改（温暖效果）</a>
 					</li>
@@ -194,9 +194,6 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===9 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.splitterMerger}>splitter混响</a>
 					</li>
-					{/*<li className={this.state.index===10 ? 'active' : ''}>
-						<a href="javascript:void(0);" onClick={this.unknown}>unknown</a>
-					</li>*/}
 				</ul>
 			</div>
 		);

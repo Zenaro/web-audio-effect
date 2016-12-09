@@ -369,19 +369,53 @@ let AudioCtxUtil = {
 	/*
 	 * 
 	 */
-	unknown: function() {
-		let lfo = this.audioCtx.createOscillator();
-		lfo.frequency.value = 1.0;
+	removeVocal: function() {
+		this.disconnect();
+        let gain = this.audioCtx.createGain(1),
+            gain2 = this.audioCtx.createGain(1),
+            gain3 = this.audioCtx.createGain(),
+            channelSplitter = this.audioCtx.createChannelSplitter(2),
+            channelMerger = this.audioCtx.createChannelMerger(2),
+            filterlow = this.audioCtx.createBiquadFilter(),
+            filterhigh = this.audioCtx.createBiquadFilter(),
+            gain4 = this.audioCtx.createGain(),
+            jsNode = this.audioCtx.createScriptProcessor(2048);
 
-		let hfo = this.audioCtx.createOscillator();
-		lfo.frequency.value = 440.0;
+        filterlow.type = filterlow.LOWPASS;
+        filterlow.frequency.value = 20;
+        filterlow.Q.value = 0;
 
-		let modulationGain = this.audioCtx.createGain();
-		modulationGain.gain.value = 50;
+        filterhigh.type = filterhigh.HIGHPASS;
+        filterhigh.frequency.value = 20000;
+        filterhigh.Q.value = 0;
 
-		lfo.connect(modulationGain);
-		modulationGain.connect(hfo.detune);
-		hfo.connect(this.audioCtx.destination);
+        // 反相音频组合
+        gain.gain.value = -1;
+        gain2.gain.value = -1;
+
+        this.source.connect(gain3);
+        gain3.connect(channelSplitter);
+
+        // 2-1>2
+        channelSplitter.connect(gain, 0);
+        gain.connect(channelMerger, 0, 1);
+        channelSplitter.connect(channelMerger, 1, 1);
+
+        //1-2>1
+        channelSplitter.connect(gain2, 1);
+        gain2.connect(channelMerger, 0, 0);
+        channelSplitter.connect(channelMerger, 0, 0);
+
+        // 高低频补偿合成
+        // source.connect(filterhigh);
+        // source.connect(filterlow);
+        // filterlow.connect(channelMerger);
+        // filterhigh.connect(channelMerger);
+        // channelMerger.connect(audioContext.destination);
+        // 普通合成
+        gain4.gain.value = 1;
+        channelMerger.connect(gain4);
+        gain4.connect(this.audioCtx.destination);
 
 	},
 
