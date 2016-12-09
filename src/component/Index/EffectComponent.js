@@ -31,6 +31,7 @@ export default class EffectComponent extends Component {
 		this.convolver = this.convolver.bind(this);
 		this.delay = this.delay.bind(this);
 		this.splitterMerger = this.splitterMerger.bind(this);
+		this.unknown = this.unknown.bind(this);
 	}
 	componentDidMount() {
 
@@ -136,6 +137,12 @@ export default class EffectComponent extends Component {
 		});
 		this.AudioCtx.splitterMerger();
 	}
+	unknown() {
+		this.setState({
+			index: 10
+		});
+		this.AudioCtx.unknown();
+	}
 	render() {
 		let className = 'effect-component aside ';
 		this.props.isLayin ?
@@ -187,6 +194,9 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===9 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.splitterMerger}>splitter混响</a>
 					</li>
+					{/*<li className={this.state.index===10 ? 'active' : ''}>
+						<a href="javascript:void(0);" onClick={this.unknown}>unknown</a>
+					</li>*/}
 				</ul>
 			</div>
 		);

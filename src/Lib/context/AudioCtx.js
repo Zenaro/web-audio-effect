@@ -365,6 +365,25 @@ let AudioCtxUtil = {
 	// 	//播放
 	// 	oscillator.start(0);
 	// },
+	
+	/*
+	 * 
+	 */
+	unknown: function() {
+		let lfo = this.audioCtx.createOscillator();
+		lfo.frequency.value = 1.0;
+
+		let hfo = this.audioCtx.createOscillator();
+		lfo.frequency.value = 440.0;
+
+		let modulationGain = this.audioCtx.createGain();
+		modulationGain.gain.value = 50;
+
+		lfo.connect(modulationGain);
+		modulationGain.connect(hfo.detune);
+		hfo.connect(this.audioCtx.destination);
+
+	},
 
 	/*
 	 * 清除音效，还原原声 
