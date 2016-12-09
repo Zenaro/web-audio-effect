@@ -105,7 +105,7 @@ let AudioCtxUtil = {
 	 * 使用 panner 来实现立体声
 	 */
 	stereo: function() {
-		this.cancelJob();
+		this.disconnect();
 		let panner = this.audioCtx.createPanner();
 
 		let gain = this.audioCtx.createGain();
@@ -128,7 +128,7 @@ let AudioCtxUtil = {
 	 * 低通滤波器
 	 */
 	lowpassFilter: function(freq) {
-		this.cancelJob();
+		this.disconnect();
 		let biquadFilter = this.audioCtx.createBiquadFilter();
 		biquadFilter.type = 'lowpass'; // 低阶通过
 		biquadFilter.Q.value = 2;
@@ -141,7 +141,7 @@ let AudioCtxUtil = {
 	 * 高通滤波器
 	 */
 	highpassFilter: function(freq) {
-		this.cancelJob();
+		this.disconnect();
 		let biquadFilter = this.audioCtx.createBiquadFilter();
 		biquadFilter.type = 'highpass'; // 低阶通过
 		biquadFilter.Q.value = 4;
@@ -154,7 +154,7 @@ let AudioCtxUtil = {
 	 * 人声增益
 	 */
 	lowshelfEnhance: function() {
-		this.cancelJob();
+		this.disconnect();
 		let biquadFilter = this.audioCtx.createBiquadFilter();
 		biquadFilter.type = 'lowshelf'; // 低于该频率将获得 10 增益
 		biquadFilter.gain.value = 10;
@@ -167,7 +167,7 @@ let AudioCtxUtil = {
 	 * 人声削弱
 	 */
 	lowshelfWeaken: function() {
-		this.cancelJob();
+		this.disconnect();
 		let biquadFilter = this.audioCtx.createBiquadFilter();
 		biquadFilter.type = 'lowshelf'; // 低于该频率将获得衰减
 		biquadFilter.gain.value = -100;
@@ -180,7 +180,7 @@ let AudioCtxUtil = {
 	 * 延时，回声效果
 	 */
 	delay: function() {
-		this.cancelJob();
+		this.disconnect();
 
 		let delay = this.audioCtx.createDelay();
 		let gain = this.audioCtx.createGain();
@@ -204,7 +204,7 @@ let AudioCtxUtil = {
 	 * AudioNode 利用曲线来应用waveshaping扭曲。在扭曲效果里,常被用来添加温暖的感觉。
 	 */
 	waveShaper: function(amount) {
-		this.cancelJob();
+		this.disconnect();
 		let shaper = this.audioCtx.createWaveShaper();
 		let compressor = this.audioCtx.createDynamicsCompressor();
 		let k = amount || 10,
@@ -243,7 +243,7 @@ let AudioCtxUtil = {
 	 * 通过降低音量最大的部分的音量来帮助避免发生削波和失真。
 	 */
 	convolver: function() {
-		this.cancelJob();
+		this.disconnect();
 		// let convolver = this.audioCtx.createConvolver();
 		// let convolverGain = this.audioCtx.createGain();
 		// let masterGain = this.audioCtx.createGain();
@@ -305,7 +305,7 @@ let AudioCtxUtil = {
 	 *  混响，左声道和右声道的分离并单独处理，最后合并成混响，左耳低阶增强，右耳
 	 */
 	splitterMerger: function() {
-		this.cancelJob();
+		this.disconnect();
 		let lGain = this.audioCtx.createGain();
 		let rGain = this.audioCtx.createGain();
 		//创建声道离合器
@@ -347,7 +347,7 @@ let AudioCtxUtil = {
 	 * 振荡器
 	 */
 	// audioOsci: function() {
-	// 	this.cancelJob();
+	// 	this.disconnect();
 	// 	let gain = this.audioCtx.createGain();
 	// 	let oscillator = this.audioCtx.createOscillator();
 	// 	//配置节点
@@ -389,7 +389,7 @@ let AudioCtxUtil = {
 	 * 清除音效，还原原声 
 	 */
 	cancelEffect: function() {
-		this.cancelJob();
+		this.disconnect();
 		this.analyser.connect(this.audioCtx.destination);
 		// this.source.connect(this.analyser);
 		// this.analyser.connect(this.audioCtx.destination);
@@ -399,7 +399,7 @@ let AudioCtxUtil = {
 	 * 用以source -> analyser -> destination 的重定向，即修改其传播路线，添加音频处理
 	 * 重新指定音频到达speaker之前的路线，故要断开之前的连接
 	 */
-	cancelJob: function() {
+	disconnect: function() {
 		this.source.disconnect(0);
 		this.analyser.disconnect(0);
 		// 先断开source的连接，重新确定路径

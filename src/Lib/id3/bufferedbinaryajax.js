@@ -1,19 +1,3 @@
-/**
- * Buffered Binary Ajax 0.2.1
- * Copyright (c) 2010 António Afonso, antonio.afonso gmail, http://www.aadsm.net/
- * MIT License [http://www.opensource.org/licenses/mit-license.php]
- *
- * Adapted from Binary Ajax 0.1.5
- */
-
-/**
- * This function prepares a BufferedBinaryFile object for reading the file pointed by the URL given.
- *
- * @param {String} strUrl The URL with the location of the file to be read.
- * @param {function(BufferedBinaryFile)} fncCallback The function that will be invoked when the BufferedBinaryFile is ready to be used.
- * @param {function()} fncError The function that will be invoked when an error occrus, for instance, the file pointed by the URL is doesn't exist.
- */
-
 var BinaryFile = require('./binaryfile');
 
 var BufferedBinaryAjax = function(strUrl, fncCallback, fncError) {

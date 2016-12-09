@@ -1,13 +1,3 @@
-/*
- * JavaScript ID3 Tag Reader 1.0.0
- * Copyright (c) 2008 Jacob Seidelin, cupboy@gmail.com, http://blog.nihilogic.dk/
- * MIT License [http://www.opensource.org/licenses/mit-license.php]
- *
- * Extended by António Afonso (antonio.afonso@opera.com), Opera Software ASA
- * Modified by António Afonso (antonio.afonso gmail.com)
- */
-
-
 var ID3v1 = {};
 
 var genres = [

@@ -1,9 +1,3 @@
-/*
- * JavaScript ID3 Tag Reader 1.0.0
- * Copyright (c) 2009 Opera Software ASA, António Afonso (antonio.afonso@opera.com)
- * Modified by António Afonso <antonio.afonso gmail.com>
- */
-
 var ID3v2 = {
     readFrameData: {}
 };

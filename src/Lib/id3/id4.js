@@ -1,13 +1,3 @@
-/*
- * Support for iTunes-style m4a tags
- * See:
- *   http://atomicparsley.sourceforge.net/mpeg-4files.html
- *   http://developer.apple.com/mac/library/documentation/QuickTime/QTFF/Metadata/Metadata.html
- * Authored by Joshua Kifer <joshua.kifer gmail.com>
- * MIT License [http://www.opensource.org/licenses/mit-license.php]
- */
-
-
 var ID4 = {};
 
 ID4.types = {

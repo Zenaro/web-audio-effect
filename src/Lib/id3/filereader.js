@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2010 António Afonso, antonio.afonso gmail, http://www.aadsm.net/
- * MIT License [http://www.opensource.org/licenses/mit-license.php]
- *
- */
 
 var BinaryFile = require('./binaryfile')
 
