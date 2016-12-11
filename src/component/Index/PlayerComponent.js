@@ -188,13 +188,12 @@ export default class PlayerComponent extends Component {
 		});
 	}
 	proBtnDragend(event) {
-		let pct = ~~(event.nativeEvent.offsetX / this.state.ProWidth * 1000) / 10;
-		if (this.Audio.duration) {
-			this.Audio.currentTime = pct * this.Audio.duration / 100;
+		if (this.state.isSeeking) {
+			this.Audio.currentTime = this.state.playingPct * this.Audio.duration / 100;
+			this.setState({
+				isSeeking: false
+			});
 		}
-		this.setState({
-			isSeeking: false
-		})
 	}
 	handleSeek(event) {
 		this.setState({
@@ -291,7 +290,7 @@ export default class PlayerComponent extends Component {
 											onDragStart={this.proBtnDragstart}
 											onDrag={this.proBtnDrag}
 											onDragOver={this.prevent}
-											// onDragEnd={this.proBtnDragend}
+											onDragEnd={this.proBtnDragend}
 											onClick={this.handleSeek}>
 									<div className="cur-inner" style={{width: this.state.playingPct + '%'}}>
 										<span className="btn-cur">

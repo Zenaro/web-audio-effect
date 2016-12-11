@@ -83,7 +83,6 @@ var BufferedBinaryAjax = function(strUrl, fncCallback, fncError) {
     function createRequest() {
         var oHTTP = null;
         if (typeof window === 'undefined') {
-            console.log('未果');
             // oHTTP = new(require("xmlhttprequest").XMLHttpRequest)();
         } else if (window.XMLHttpRequest) {
             oHTTP = new window.XMLHttpRequest();
@@ -205,7 +204,6 @@ var BufferedBinaryAjax = function(strUrl, fncCallback, fncError) {
                 if (blockRange[0] > blockRange[1]) return callback ? callback() : undefined;
             }
             var range = [blockRange[0] * blockSize, (blockRange[1] + 1) * blockSize - 1];
-            //console.log("Getting: " + range[0] + " to " +  range[1]);
             sendRequest(
                 strUrl,
                 function(http) {

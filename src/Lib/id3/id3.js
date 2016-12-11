@@ -26,7 +26,6 @@ function getTagReader(data) {
 
 function readTags(reader, data, url, tags) {
     var tagsFound = reader.readTagsFromData(data, tags);
-    //console.log("Downloaded data: " + data.getDownloadedBytesCount() + "bytes");
     var Tags = _files[url] || {};
     for (var tag in tagsFound)
         if (tagsFound.hasOwnProperty(tag)) {

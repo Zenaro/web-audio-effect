@@ -17,7 +17,7 @@ export default class EffectComponent extends Component {
 			isDropdownHighpass: false
 		}
 		this.AudioCtx = this.props.AudioCtx;
-		this.switchEffect = this.switchEffect.bind(this);
+		// this.switchEffect = this.switchEffect.bind(this);
 		this.reset = this.reset.bind(this);
 		this.cancelEffect = this.cancelEffect.bind(this);
 		this.stereo = this.stereo.bind(this);
@@ -101,15 +101,6 @@ export default class EffectComponent extends Component {
 		});
 		this.AudioCtx.highpassFilter(Hz);
 	}
-	// lowshelfEnhance() {
-	// 	this.setState({
-	// 		index: 4
-	// 	});
-	// 	this.AudioCtx.lowshelfEnhance();
-	// }
-	// lowshelfWeaken() {
-	// 	this.AudioCtx.lowshelfWeaken();
-	// }
 	enhanceVocal() {
 		this.setState({
 			index: 4
@@ -136,20 +127,19 @@ export default class EffectComponent extends Component {
 	}
 	convolver() {
 		this.setState({
-			index: 100
+			index: 8
 		});
 		this.AudioCtx.convolver();
 	}
 	delay() {
 		this.setState({
-			index: 8
+			index: 9
 		});
 		this.AudioCtx.delay();
-		// this.drawStart();
 	}
 	splitterMerger() {
 		this.setState({
-			index: 9
+			index: 10
 		});
 		this.AudioCtx.splitterMerger();
 	}
@@ -160,7 +150,7 @@ export default class EffectComponent extends Component {
 			className += 'slide-out';
 		return (
 			<div className={className} onClick={this.stop}>
-				<a href="javascript:void(0)" className="btn-func" onClick={this.switchEffect}>
+				<a href="javascript:void(0)" className="btn-func">
 					<i className="icon-effect">❔</i>
 				</a>
 				<ul className="btn-group" onClick={this.reset}>
@@ -198,13 +188,13 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===7 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.compressor}>压缩高分贝（补偿失真）</a>
 					</li>
-					<li className={this.state.index===100 ? 'active' : ''}>
+					<li className={this.state.index===8 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.convolver}>convolver</a>
 					</li>
-					<li className={this.state.index===8 ? 'active' : ''}>
+					<li className={this.state.index===9 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.delay}>delay 礼堂回声</a>
 					</li>
-					<li className={this.state.index===9 ? 'active' : ''}>
+					<li className={this.state.index===10 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.splitterMerger}>splitter混响</a>
 					</li>
 				</ul>

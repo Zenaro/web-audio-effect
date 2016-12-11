@@ -12,7 +12,6 @@ export default class ListComponent extends Component {
 		// };
 	}
 	componentDidMount() {
-		// console.log(this.props.isLayin);
 		// this.setState({
 		// 	isLayin: this.props.isLayin
 		// });

@@ -156,7 +156,6 @@ if (typeof document !== 'undefined') {
 	b64utils.btoa = window.btoa;
 	b64utils.atob = window.atob;
 } else {
-	console.log('未果');
 	// b64utils.btoa = require('btoa');
 	// b64utils.atob = require('atob');
 }
