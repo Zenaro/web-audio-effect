@@ -30,7 +30,7 @@ export default class EffectComponent extends Component {
 		// this.lowshelfEnhance = this.lowshelfEnhance.bind(this);
 		// this.lowshelfWeaken = this.lowshelfWeaken.bind(this);
 		this.waveShaper = this.waveShaper.bind(this);
-		this.compressor = this.convolver.bind(this);
+		this.compressor = this.compressor.bind(this);
 		this.convolver = this.convolver.bind(this);
 		this.delay = this.delay.bind(this);
 		this.splitterMerger = this.splitterMerger.bind(this);

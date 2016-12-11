@@ -181,81 +181,81 @@ let AudioCtxUtil = {
 	 */
 	enhanceVocal: function() {
 		this.disconnect();
-        let gain1 = this.audioCtx.createGain(),
-            gain2 = this.audioCtx.createGain(),
-            gain3 = this.audioCtx.createGain(),
-            gain4 = this.audioCtx.createGain(),
-            channelSplitter = this.audioCtx.createChannelSplitter(2),
-            channelMerger = this.audioCtx.createChannelMerger(2);
+		let gain1 = this.audioCtx.createGain(),
+			gain2 = this.audioCtx.createGain(),
+			gain3 = this.audioCtx.createGain(),
+			gain4 = this.audioCtx.createGain(),
+			channelSplitter = this.audioCtx.createChannelSplitter(2),
+			channelMerger = this.audioCtx.createChannelMerger(2);
 
-        gain1.gain.value = 2;
-        gain2.gain.value = 2;
+		gain1.gain.value = 2;
+		gain2.gain.value = 2;
 
-        this.source.connect(gain3);
-        gain3.connect(channelSplitter);
+		this.source.connect(gain3);
+		gain3.connect(channelSplitter);
 
-        // 2-1>2
-        channelSplitter.connect(gain1, 0);
-        gain1.connect(channelMerger, 0, 1);
-        channelSplitter.connect(channelMerger, 1, 1);
+		// 2-1>2
+		channelSplitter.connect(gain1, 0);
+		gain1.connect(channelMerger, 0, 1);
+		channelSplitter.connect(channelMerger, 1, 1);
 
-        //1-2>1
-        channelSplitter.connect(gain2, 1);
-        gain2.connect(channelMerger, 0, 0);
-        channelSplitter.connect(channelMerger, 0, 0);
+		//1-2>1
+		channelSplitter.connect(gain2, 1);
+		gain2.connect(channelMerger, 0, 0);
+		channelSplitter.connect(channelMerger, 0, 0);
 
-        gain4.gain.value = 0.8;
-        channelMerger.connect(gain4);
-        gain4.connect(this.audioCtx.destination);
+		gain4.gain.value = 0.8;
+		channelMerger.connect(gain4);
+		gain4.connect(this.audioCtx.destination);
 	},
 
 	removeVocal: function() {
 		this.disconnect();
-        let gain1 = this.audioCtx.createGain(),
-            gain2 = this.audioCtx.createGain(),
-            gain3 = this.audioCtx.createGain(),
-            gain4 = this.audioCtx.createGain(),
-            channelSplitter = this.audioCtx.createChannelSplitter(2),
-            channelMerger = this.audioCtx.createChannelMerger(2);
-        //     filterlow = this.audioCtx.createBiquadFilter(),
-        //     filterhigh = this.audioCtx.createBiquadFilter(),
-        //     jsNode = this.audioCtx.createScriptProcessor(2048);
+		let gain1 = this.audioCtx.createGain(),
+			gain2 = this.audioCtx.createGain(),
+			gain3 = this.audioCtx.createGain(),
+			gain4 = this.audioCtx.createGain(),
+			channelSplitter = this.audioCtx.createChannelSplitter(2),
+			channelMerger = this.audioCtx.createChannelMerger(2);
+		//     filterlow = this.audioCtx.createBiquadFilter(),
+		//     filterhigh = this.audioCtx.createBiquadFilter(),
+		//     jsNode = this.audioCtx.createScriptProcessor(2048);
 
-        // filterlow.type = filterlow.LOWPASS;
-        // filterlow.frequency.value = 20;
-        // filterlow.Q.value = 0;
+		// filterlow.type = filterlow.LOWPASS;
+		// filterlow.frequency.value = 20;
+		// filterlow.Q.value = 0;
 
-        // filterhigh.type = filterhigh.HIGHPASS;
-        // filterhigh.frequency.value = 20000;
-        // filterhigh.Q.value = 0;
+		// filterhigh.type = filterhigh.HIGHPASS;
+		// filterhigh.frequency.value = 20000;
+		// filterhigh.Q.value = 0;
 
-        // 反相音频组合
-        gain1.gain.value = -1;
-        gain2.gain.value = -1;
+		// 反相音频组合
+		gain1.gain.value = -1;
+		gain2.gain.value = -1;
 
-        this.source.connect(gain3);
-        gain3.connect(channelSplitter);
+		this.source.connect(gain3);
+		gain3.connect(channelSplitter);
 
-        // 2-1>2
-        channelSplitter.connect(gain1, 0);
-        gain1.connect(channelMerger, 0, 1);
-        channelSplitter.connect(channelMerger, 1, 1);
+		// 2-1>2
+		channelSplitter.connect(gain1, 0);
+		gain1.connect(channelMerger, 0, 1);
+		channelSplitter.connect(channelMerger, 1, 1);
 
-        //1-2>1
-        channelSplitter.connect(gain2, 1);
-        gain2.connect(channelMerger, 0, 0);
-        channelSplitter.connect(channelMerger, 0, 0);
+		//1-2>1
+		channelSplitter.connect(gain2, 1);
+		gain2.connect(channelMerger, 0, 0);
+		channelSplitter.connect(channelMerger, 0, 0);
 
-        // 高低频补偿合成
-        // source.connect(filterhigh);
-        // source.connect(filterlow);
-        // filterlow.connect(channelMerger);
-        // filterhigh.connect(channelMerger);
-        // channelMerger.connect(audioContext.destination);
-        // 普通合成
-        gain4.gain.value = 1;
-        channelMerger.connect(gain4);
-        gain4.connect(this.audioCtx.destination);
+		// 高低频补偿合成
+		// source.connect(filterhigh);
+		// source.connect(filterlow);
+		// filterlow.connect(channelMerger);
+		// filterhigh.connect(channelMerger);
+		// channelMerger.connect(audioContext.destination);
+		// 普通合成
+		gain4.gain.value = 1;
+		channelMerger.connect(gain4);
+		gain4.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -321,6 +321,7 @@ let AudioCtxUtil = {
 	 * 混响, Room Effect
 	 */
 	convolver: function() {
+		this.disconnect();
 		let compressor = this.audioCtx.createDynamicsCompressor();
 		let convolver = this.audioCtx.createConvolver();
 		let gain = this.audioCtx.createGain();

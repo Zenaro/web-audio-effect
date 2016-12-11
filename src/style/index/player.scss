@@ -120,14 +120,15 @@ $dir: '../../images/player';
               background: $cur-color;
               border-radius: $radius;
               > span.btn-cur {
-                width: 21px;
-                height: 21px;
-                top: -7px;
-                right: -15px;
+                width: 6px;
+                height: 6px;
+                top: -4px;
+                right: -13px;
                 cursor: pointer;
                 position: absolute;
-                background: url($dir + '/iconall.png');
-                background-position: 0 -250px;
+                background: $cur-color;
+                border-radius: 50%;
+                border: solid 5px #fff;
                 > i {
                   width: 12px;
                   height: 12px;
@@ -194,14 +195,15 @@ $dir: '../../images/player';
             position: absolute;
             background: $cur-color;
             > i.btn-cur {
-              width: 18px;
-              height: 18px;
+              width: 5px;
+              height: 5px;
               top: -12px;
-              left: -7px;
+              left: -5px;
               cursor: pointer;
               position: absolute;
-              background: url($dir + '/iconall.png');
-              background-position: -40px -250px;
+              border: solid 4px #fff;
+              border-radius: 50%;
+              background: $cur-color;
             }
           }
         }

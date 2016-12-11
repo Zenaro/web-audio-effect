@@ -70,57 +70,6 @@ i, em {
 			width: 100%;
 			display: block;
 		}
-		/*dl {
-			$cell: 30px;
-			font-size: 30px;
-			$width: 100%;
-			$height: 100%;
-			top: 50px;
-			left: 0;
-			width: $width;
-			height: $height;
-			position: absolute;
-			dd {
-				padding: 6px;
-				position: absolute;
-				cursor: pointer;
-				background: rgba(255, 255, 255, 0.4);
-				&.node-source {
-					left: 44%;
-				}
-				&.node-analyser {
-					top: $cell * 5;
-					left: 3%;
-				}
-				&.node-lowpass {
-					top: $cell * 5;
-					left: 43%;
-				}
-				&.node-highpass {
-					top: $cell * 5;
-					right: 3%;
-				}
-				&.node-dest {
-					top: $cell * 15;
-					left: 46%;
-				}
-			}
-			// dt {
-			// 	@include item(1);
-			// 	top: 48%;
-			// 	left: 48%;
-			// }
-			// dd.stareo {
-			// 	@include item(0.8);
-			// 	top: 0;
-			// 	right: 0;
-			// }
-			// dd.lowpass {
-			// 	@include item(0.8);
-			// 	bottom: 0;
-			// 	left: 0;
-			// }
-		}*/
 	}
 	canvas {
 		$width: 1040px;
@@ -130,7 +79,6 @@ i, em {
 		left: 50%;
 		bottom: 10px;
 		margin-left: -$width / 2;
-		// margin-top: -$min-width / 2 + 10px;
 	}
 }
 
