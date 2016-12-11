@@ -25,13 +25,15 @@ export default class EffectComponent extends Component {
 		this.lowpassFilter = this.lowpassFilter.bind(this);
 		this.highpassDropdown = this.highpassDropdown.bind(this);
 		this.highpassFilter = this.highpassFilter.bind(this);
-		this.lowshelfEnhance = this.lowshelfEnhance.bind(this);
-		this.lowshelfWeaken = this.lowshelfWeaken.bind(this);
+		this.removeVocal = this.removeVocal.bind(this);
+		this.enhanceVocal = this.enhanceVocal.bind(this);
+		// this.lowshelfEnhance = this.lowshelfEnhance.bind(this);
+		// this.lowshelfWeaken = this.lowshelfWeaken.bind(this);
 		this.waveShaper = this.waveShaper.bind(this);
+		this.compressor = this.convolver.bind(this);
 		this.convolver = this.convolver.bind(this);
 		this.delay = this.delay.bind(this);
 		this.splitterMerger = this.splitterMerger.bind(this);
-		this.removeVocal = this.removeVocal.bind(this);
 	}
 	componentDidMount() {
 
@@ -99,14 +101,20 @@ export default class EffectComponent extends Component {
 		});
 		this.AudioCtx.highpassFilter(Hz);
 	}
-	lowshelfEnhance() {
+	// lowshelfEnhance() {
+	// 	this.setState({
+	// 		index: 4
+	// 	});
+	// 	this.AudioCtx.lowshelfEnhance();
+	// }
+	// lowshelfWeaken() {
+	// 	this.AudioCtx.lowshelfWeaken();
+	// }
+	enhanceVocal() {
 		this.setState({
 			index: 4
 		});
-		this.AudioCtx.lowshelfEnhance();
-	}
-	lowshelfWeaken() {
-		this.AudioCtx.lowshelfWeaken();
+		this.AudioCtx.enhanceVocal();
 	}
 	removeVocal() {
 		this.setState({
@@ -120,12 +128,17 @@ export default class EffectComponent extends Component {
 		});
 		this.AudioCtx.waveShaper();
 	}
-	convolver() {
+	compressor() {
 		this.setState({
 			index: 7
 		});
+		this.AudioCtx.compressor();
+	}
+	convolver() {
+		this.setState({
+			index: 100
+		});
 		this.AudioCtx.convolver();
-		// this.drawStart();
 	}
 	delay() {
 		this.setState({
@@ -174,19 +187,19 @@ export default class EffectComponent extends Component {
 						</div>
 					</li>
 					<li className={this.state.index===4 ? 'active' : ''}>
-						<a href="javascript:void(0)" onClick={this.lowshelfEnhance}>人声增益（82~392Hz）</a>
+						<a href="javascript:void(0)" onClick={this.enhanceVocal}>人声增益</a>
 					</li>
 					<li className={this.state.index==5 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.removeVocal}>人声消除</a>
 					</li>
-					{/*<li className={this.state.index===5 ? 'active' : ''}>
-						<a href="javascript:void(0)" onClick={this.lowshelfWeaken}>人声削弱（82~392Hz）</a>
-					</li>*/}
 					<li className={this.state.index===6 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.waveShaper}>波形修改（温暖效果）</a>
 					</li>
 					<li className={this.state.index===7 ? 'active' : ''}>
-						<a href="javascript:void(0);" onClick={this.convolver}>压缩高分贝（补偿失真）</a>
+						<a href="javascript:void(0);" onClick={this.compressor}>压缩高分贝（补偿失真）</a>
+					</li>
+					<li className={this.state.index===100 ? 'active' : ''}>
+						<a href="javascript:void(0);" onClick={this.convolver}>convolver</a>
 					</li>
 					<li className={this.state.index===8 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.delay}>delay 礼堂回声</a>

@@ -2,20 +2,24 @@
 $dir: '../../images/player';
 .audio-player {
   width: 100%;
-  background: #333;
-  position: fixed;
-  font-size: 14px;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 2;
+  position: fixed;
+  font-size: 14px;
+  background: rgba(30, 30, 30, 0.4);
   a, i, em {
-    display: block;
     float: left;
-    text-decoration: none;
+    display: block;
     font-style: normal;
+    text-decoration: none;
   }
   .audio-player-core {
+    $pro-color: #111;
+    $rdy-color: $pro-color + #222;
+    $cur-color: #008d9a;
+
     width: 780px;
     height: 50px;
     margin: 0 auto;
@@ -90,34 +94,36 @@ $dir: '../../images/player';
         height: 15px;
         padding: 5px 0;
         > .barbg {      /*总进度条*/
-          width: 415px;
-          height: 100%;
+          $radius: 20px;
+          width: 80%;
+          height: 9px;
           float: left;
           position: relative;
-          background: url($dir + '/linebar.png');
-          background-position: right 0;
+          background: $pro-color;
+          border-radius: 4px;
           > .rdy {      /*灰色缓冲条*/
             width: 0;
             height: 100%;
-            background: url($dir + '/linebar.png');
-            background-position: right -30px;
+            border-radius: $radius;
+            background: $rdy-color;
           }
           > .cur {      /*当前条*/
-            width: 400px;
+            width: 100%;
             height: 100%;
+            border-radius: $radius;
             position: absolute;
             top: 0;
             > .cur-inner {
               width: 0;
               height: 100%;
               position: absolute;
-              background: url($dir + '/linebar.png');
-              background-position: left -66px;
+              background: $cur-color;
+              border-radius: $radius;
               > span.btn-cur {
                 width: 21px;
                 height: 21px;
-                top: -8px;
-                right: -16px;
+                top: -7px;
+                right: -15px;
                 cursor: pointer;
                 position: absolute;
                 background: url($dir + '/iconall.png');
@@ -135,10 +141,12 @@ $dir: '../../images/player';
           }
         }
         > span.clock {
+          width: 20%;
           height: 100%;
           display: block;
           float: right;
           color: #888;
+          text-align: center;
           line-height: 8px;
           font-size: 12px;
           > i {
@@ -167,21 +175,24 @@ $dir: '../../images/player';
         width: 32px;
         height: 90px;
         padding: 10px 0;
-        background: url($dir + '/playbar.png');
-        background-position: 0 -507px;
+        background: rgba(0, 0, 0, 0.6);
         > .barbg {
-          width: 100%;
+          $radius: 4px;
+          width: 4px;
           height: 88px;
+          left: 15px;
           position: absolute;
+          background: $pro-color;
+          border-radius: $radius;
           top: 11px;
           > .cur {
             width: 4px;
             height: 0;
-            left: 15px;
+            left: 0;
             bottom: 0;
+            border-radius: $radius;
             position: absolute;
-            background: url($dir + '/playbar.png');
-            background-position: -40px bottom;
+            background: $cur-color;
             > i.btn-cur {
               width: 18px;
               height: 18px;

@@ -151,7 +151,7 @@ let AudioCtxUtil = {
 	},
 
 	/*
-	 * 人声增益
+	 * 39~392kHz人声增益 -- not complet
 	 */
 	lowshelfEnhance: function() {
 		this.disconnect();
@@ -164,7 +164,7 @@ let AudioCtxUtil = {
 	},
 
 	/*
-	 * 人声削弱
+	 * 人声削弱 -- not complet
 	 */
 	lowshelfWeaken: function() {
 		this.disconnect();
@@ -174,6 +174,88 @@ let AudioCtxUtil = {
 		biquadFilter.frequency.value = 392; // 临界点的 Hz，默认800Hz
 		this.source.connect(biquadFilter);
 		biquadFilter.connect(this.audioCtx.destination);
+	},
+
+	/*
+	 * 人声增益 -- perfect -- 
+	 */
+	enhanceVocal: function() {
+		this.disconnect();
+        let gain1 = this.audioCtx.createGain(),
+            gain2 = this.audioCtx.createGain(),
+            gain3 = this.audioCtx.createGain(),
+            gain4 = this.audioCtx.createGain(),
+            channelSplitter = this.audioCtx.createChannelSplitter(2),
+            channelMerger = this.audioCtx.createChannelMerger(2);
+
+        gain1.gain.value = 2;
+        gain2.gain.value = 2;
+
+        this.source.connect(gain3);
+        gain3.connect(channelSplitter);
+
+        // 2-1>2
+        channelSplitter.connect(gain1, 0);
+        gain1.connect(channelMerger, 0, 1);
+        channelSplitter.connect(channelMerger, 1, 1);
+
+        //1-2>1
+        channelSplitter.connect(gain2, 1);
+        gain2.connect(channelMerger, 0, 0);
+        channelSplitter.connect(channelMerger, 0, 0);
+
+        gain4.gain.value = 0.8;
+        channelMerger.connect(gain4);
+        gain4.connect(this.audioCtx.destination);
+	},
+
+	removeVocal: function() {
+		this.disconnect();
+        let gain1 = this.audioCtx.createGain(),
+            gain2 = this.audioCtx.createGain(),
+            gain3 = this.audioCtx.createGain(),
+            gain4 = this.audioCtx.createGain(),
+            channelSplitter = this.audioCtx.createChannelSplitter(2),
+            channelMerger = this.audioCtx.createChannelMerger(2);
+        //     filterlow = this.audioCtx.createBiquadFilter(),
+        //     filterhigh = this.audioCtx.createBiquadFilter(),
+        //     jsNode = this.audioCtx.createScriptProcessor(2048);
+
+        // filterlow.type = filterlow.LOWPASS;
+        // filterlow.frequency.value = 20;
+        // filterlow.Q.value = 0;
+
+        // filterhigh.type = filterhigh.HIGHPASS;
+        // filterhigh.frequency.value = 20000;
+        // filterhigh.Q.value = 0;
+
+        // 反相音频组合
+        gain1.gain.value = -1;
+        gain2.gain.value = -1;
+
+        this.source.connect(gain3);
+        gain3.connect(channelSplitter);
+
+        // 2-1>2
+        channelSplitter.connect(gain1, 0);
+        gain1.connect(channelMerger, 0, 1);
+        channelSplitter.connect(channelMerger, 1, 1);
+
+        //1-2>1
+        channelSplitter.connect(gain2, 1);
+        gain2.connect(channelMerger, 0, 0);
+        channelSplitter.connect(channelMerger, 0, 0);
+
+        // 高低频补偿合成
+        // source.connect(filterhigh);
+        // source.connect(filterlow);
+        // filterlow.connect(channelMerger);
+        // filterhigh.connect(channelMerger);
+        // channelMerger.connect(audioContext.destination);
+        // 普通合成
+        gain4.gain.value = 1;
+        channelMerger.connect(gain4);
+        gain4.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -207,13 +289,11 @@ let AudioCtxUtil = {
 		this.disconnect();
 		let shaper = this.audioCtx.createWaveShaper();
 		let compressor = this.audioCtx.createDynamicsCompressor();
-		let k = amount || 10,
+		let k = typeof amount === 'number' ? amount : 10,
 			n_samples = 44100,
 			curve = new Float32Array(n_samples),
-			deg = Math.PI / 180,
-			i = 0,
-			x;
-		for (; i < n_samples; i++) {
+			deg = Math.PI / 180;
+		for (let x, i = 0; i < n_samples; i++) {
 			x = i * 2 / n_samples - 1;
 			curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
 		}
@@ -238,15 +318,27 @@ let AudioCtxUtil = {
 	},
 
 	/*
+	 * 混响, Room Effect
+	 */
+	convolver: function() {
+		let compressor = this.audioCtx.createDynamicsCompressor();
+		let convolver = this.audioCtx.createConvolver();
+		let gain = this.audioCtx.createGain();
+
+		this.source.connect(compressor);
+		compressor.connect(convolver);
+		convolver.connect(gain);
+		gain.connect(this.audioCtx.destination);
+	},
+
+	/*
 	 * 
 	 * createDynamicsCompressor()方法用于创建动态压缩器节点，可用于对音频信号应用压缩。
 	 * 通过降低音量最大的部分的音量来帮助避免发生削波和失真。
 	 */
-	convolver: function() {
+	compressor: function() {
 		this.disconnect();
-		// let convolver = this.audioCtx.createConvolver();
-		// let convolverGain = this.audioCtx.createGain();
-		// let masterGain = this.audioCtx.createGain();
+
 		let masterCompression = this.audioCtx.createDynamicsCompressor();
 
 		masterCompression.threshold.value = -50; // 分贝值，高于该分贝值，压缩将开始生效。
@@ -255,9 +347,6 @@ let AudioCtxUtil = {
 		// masterCompression.reduction.value = -20; //一个浮子表示压缩器当前对信号应用的增益减少量。
 		masterCompression.attack.value = 0; //表示将增益降低10 dB所需的时间量（以秒为单位）。
 		masterCompression.release.value = 0.25; //表示将增益增加10 dB所需的时间量（以秒为单位）。
-
-		// this.source.connect(masterGain);
-		// this.source.connect(convolverGain);
 
 		// 1
 		// masterGain.connect(masterCompression);
@@ -302,7 +391,7 @@ let AudioCtxUtil = {
 	},
 
 	/*
-	 *  混响，左声道和右声道的分离并单独处理，最后合并成混响，左耳低阶增强，右耳
+	 *  左声道和右声道的分离并单独处理，最后合并，左耳低阶增强，右耳伴奏增强
 	 */
 	splitterMerger: function() {
 		this.disconnect();
@@ -365,59 +454,6 @@ let AudioCtxUtil = {
 	// 	//播放
 	// 	oscillator.start(0);
 	// },
-	
-	/*
-	 * 
-	 */
-	removeVocal: function() {
-		this.disconnect();
-        let gain = this.audioCtx.createGain(1),
-            gain2 = this.audioCtx.createGain(1),
-            gain3 = this.audioCtx.createGain(),
-            channelSplitter = this.audioCtx.createChannelSplitter(2),
-            channelMerger = this.audioCtx.createChannelMerger(2),
-            filterlow = this.audioCtx.createBiquadFilter(),
-            filterhigh = this.audioCtx.createBiquadFilter(),
-            gain4 = this.audioCtx.createGain(),
-            jsNode = this.audioCtx.createScriptProcessor(2048);
-
-        filterlow.type = filterlow.LOWPASS;
-        filterlow.frequency.value = 20;
-        filterlow.Q.value = 0;
-
-        filterhigh.type = filterhigh.HIGHPASS;
-        filterhigh.frequency.value = 20000;
-        filterhigh.Q.value = 0;
-
-        // 反相音频组合
-        gain.gain.value = -1;
-        gain2.gain.value = -1;
-
-        this.source.connect(gain3);
-        gain3.connect(channelSplitter);
-
-        // 2-1>2
-        channelSplitter.connect(gain, 0);
-        gain.connect(channelMerger, 0, 1);
-        channelSplitter.connect(channelMerger, 1, 1);
-
-        //1-2>1
-        channelSplitter.connect(gain2, 1);
-        gain2.connect(channelMerger, 0, 0);
-        channelSplitter.connect(channelMerger, 0, 0);
-
-        // 高低频补偿合成
-        // source.connect(filterhigh);
-        // source.connect(filterlow);
-        // filterlow.connect(channelMerger);
-        // filterhigh.connect(channelMerger);
-        // channelMerger.connect(audioContext.destination);
-        // 普通合成
-        gain4.gain.value = 1;
-        channelMerger.connect(gain4);
-        gain4.connect(this.audioCtx.destination);
-
-	},
 
 	/*
 	 * 清除音效，还原原声 

@@ -53,6 +53,7 @@ export default class PlayerComponent extends Component {
 		this.lopTypeChange = this.lopTypeChange.bind(this);
 	}
 	componentDidMount() {
+		this.Audio.volume = 0.5;
 		this.Audio.ondurationchange = () => {
 			this.setState({
 				duration: this.Audio.duration
@@ -200,7 +201,6 @@ export default class PlayerComponent extends Component {
 			isSeeking: true
 		});
 		let pct = ~~(event.nativeEvent.offsetX / this.state.ProWidth * 1000) / 10;
-		console.log(pct);
 		this.setState({
 			playingPct: pct
 		});
@@ -291,7 +291,7 @@ export default class PlayerComponent extends Component {
 											onDragStart={this.proBtnDragstart}
 											onDrag={this.proBtnDrag}
 											onDragOver={this.prevent}
-											onDragEnd={this.proBtnDragend}
+											// onDragEnd={this.proBtnDragend}
 											onClick={this.handleSeek}>
 									<div className="cur-inner" style={{width: this.state.playingPct + '%'}}>
 										<span className="btn-cur">
@@ -312,7 +312,10 @@ export default class PlayerComponent extends Component {
 							<div className="barbg" onClick={this.vlmChange}>
 								<div className="cur" style={{height: this.state.vlm * 100 + '%'}}>
 									<i className="btn-cur" draggable="true" 
-										onDrag={this.vlmChange} onDragEnd={this.vlmChange}></i>
+										onDrag={this.vlmChange} onDragOver={this.prevent} 
+										// onDragEnd={this.vlmChange}
+									>
+									</i>
 								</div>
 							</div>
 						</div>
