@@ -188,9 +188,9 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===7 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.compressor}>压缩高分贝（补偿失真）</a>
 					</li>
-					<li className={this.state.index===8 ? 'active' : ''}>
+					{/*<li className={this.state.index===8 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.convolver}>convolver</a>
-					</li>
+					</li>*/}
 					<li className={this.state.index===9 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.delay}>delay 礼堂回声</a>
 					</li>
