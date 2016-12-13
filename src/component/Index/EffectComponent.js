@@ -125,23 +125,23 @@ export default class EffectComponent extends Component {
 		});
 		this.AudioCtx.compressor();
 	}
-	convolver() {
-		this.setState({
-			index: 8
-		});
-		this.AudioCtx.convolver();
-	}
 	delay() {
 		this.setState({
-			index: 9
+			index: 8
 		});
 		this.AudioCtx.delay();
 	}
 	splitterMerger() {
 		this.setState({
-			index: 10
+			index: 9
 		});
 		this.AudioCtx.splitterMerger();
+	}
+	ktvOnline() {
+		this.setState({
+			index: 10
+		});
+		this.AudioCtx.ktvOnline();
 	}
 	render() {
 		let className = 'effect-component aside ';
@@ -188,14 +188,14 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===7 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.compressor}>压缩高分贝（补偿失真）</a>
 					</li>
-					{/*<li className={this.state.index===8 ? 'active' : ''}>
-						<a href="javascript:void(0);" onClick={this.convolver}>convolver</a>
-					</li>*/}
-					<li className={this.state.index===9 ? 'active' : ''}>
+					<li className={this.state.index===8 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.delay}>delay 礼堂回声</a>
 					</li>
-					<li className={this.state.index===10 ? 'active' : ''}>
+					<li className={this.state.index===9 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.splitterMerger}>splitter混响</a>
+					</li>
+					<li className={this.state.index===10 ? 'active' : ''}>
+						<a href="javascript:void(0);" onClick={this.ktvOnline}>在线 ktv</a>
 					</li>
 				</ul>
 			</div>
