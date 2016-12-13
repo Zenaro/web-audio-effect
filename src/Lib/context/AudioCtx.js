@@ -457,6 +457,41 @@ let AudioCtxUtil = {
 	// },
 
 	/*
+	 *
+	 */
+	ktvOnline: function() {
+		navigator.getUserMedia = navigator.getUserMedia ||
+				navigator.webkitGetUserMedia ||
+				navigator.mozGetUserMedia;
+		if (navigator.getUserMedia) {
+			console.log('getUserMedia supported.');
+			navigator.getUserMedia({
+				audio: true
+			}, (stream) => {
+				let chunks = [];
+				let mediaRecorder = new window.MediaRecorder(stream);
+				mediaRecorder.start();
+				mediaRecorder.ondataavailable = (e) => {
+					chunks.push(e.data);
+				};
+				// mediaRecorder.stop();
+				mediaRecorder.onstop = (e) => {
+					let clipName = prompt('Enter a name for your sound clip');
+					let blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
+					let audioURL = window.URL.createObjectURL(blob);
+					// this.audio.src = audioURL;
+				}
+
+			}, (err) => {
+				console.log('The following gUM error occured: ' + err);
+			});
+
+		} else {
+			console.log('getUserMedia not supported on your browser');
+		}
+
+	},
+	/*
 	 * 清除音效，还原原声 
 	 */
 	cancelEffect: function() {
