@@ -188,7 +188,7 @@ export default class PlayerComponent extends Component {
 		});
 	}
 	proBtnDragend(event) {
-		if (this.state.isSeeking) {
+		if (this.state.isSeeking && this.Audio.currentTime) {
 			this.Audio.currentTime = this.state.playingPct * this.Audio.duration / 100;
 			this.setState({
 				isSeeking: false
@@ -233,13 +233,13 @@ export default class PlayerComponent extends Component {
 			}
 		}
 		let short = (this.state.VlmOuterH - this.state.VlmInnerH) / 2,
-			pct = (PlayerOffsetTop - event.pageY - short) / this.state.VlmInnerH;
-		if (pct > 0.95) pct = 0.95;
-		if (pct < 0) pct = 0;
-		this.setState({
-			vlm: pct
-		});
-		this.Audio.volume = pct;
+			pct = (PlayerOffsetTop - event.clientY - short) / this.state.VlmInnerH;
+		if (pct > 0 && pct < 1) {
+			this.setState({
+				vlm: pct
+			});
+			this.Audio.volume = pct;
+		}
 	}
 	lopTypeChange() {
 		let index = this.state.lopIndex,
@@ -307,11 +307,16 @@ export default class PlayerComponent extends Component {
 						</div>
 					</div>
 					<div className="play-ctrl">
-						<div className={this.state.vlmAdjust?"vlm-bar show":"vlm-bar"} onMouseLeave={this.offVlm}>
-							<div className="barbg" onClick={this.vlmChange}>
+						<div className={this.state.vlmAdjust?"vlm-bar show":"vlm-bar"} 
+							onMouseLeave={this.offVlm}
+						>
+							<div className="barbg" 
+								onClick={this.vlmChange}
+							>
 								<div className="cur" style={{height: this.state.vlm * 100 + '%'}}>
 									<i className="btn-cur" draggable="true" 
-										onDrag={this.vlmChange} onDragOver={this.prevent} 
+										onDrag={this.vlmChange} 
+										// onDragOver={this.prevent} 
 										// onDragEnd={this.vlmChange}
 									>
 									</i>

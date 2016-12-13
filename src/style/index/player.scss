@@ -174,8 +174,7 @@ $dir: '../../images/player';
         top: -110px;
         left: 8px;
         width: 32px;
-        height: 90px;
-        padding: 10px 0;
+        height: 110px;
         background: rgba(0, 0, 0, 0.6);
         > .barbg {
           $radius: 4px;
@@ -185,7 +184,7 @@ $dir: '../../images/player';
           position: absolute;
           background: $pro-color;
           border-radius: $radius;
-          top: 11px;
+          top: 12px;
           > .cur {
             width: 4px;
             height: 0;
@@ -197,8 +196,8 @@ $dir: '../../images/player';
             > i.btn-cur {
               width: 5px;
               height: 5px;
-              top: -12px;
-              left: -5px;
+              top: -6px;
+              left: -4px;
               cursor: pointer;
               position: absolute;
               border: solid 4px #fff;
