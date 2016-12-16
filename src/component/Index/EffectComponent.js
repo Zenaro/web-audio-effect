@@ -194,9 +194,9 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===9 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.splitterMerger}>splitter混响</a>
 					</li>
-					<li className={this.state.index===10 ? 'active' : ''}>
+					{/*<li className={this.state.index===10 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.ktvOnline}>在线 ktv</a>
-					</li>
+					</li>*/}
 				</ul>
 			</div>
 		);

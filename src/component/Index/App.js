@@ -37,7 +37,7 @@ export default class App extends Component {
 		this.filesChange = this.filesChange.bind(this);
 	}
 	componentDidMount() {
-		CanvasCtx.init(AudioAnalyser, this.DOMCanvas);
+		this.canvas = new CanvasCtx(this.DOMCanvas, AudioAnalyser);
 		this.setState({
 			isLayinList: true,
 			isLayinEffect: true
@@ -100,12 +100,10 @@ export default class App extends Component {
 				newLength = this.state.FileList.length;
 			if (originLength == 0 && newLength > 0) {
 				this.restart(0);
-				// CanvasCtx.drawRect();
 
 			} else if (originLength && originLength < newLength) {
 				index = originLength;
 				this.restart(originLength);
-				// CanvasCtx.drawRect();
 
 			} else {
 				alert('The files you dragged may no be the audio');
@@ -132,7 +130,7 @@ export default class App extends Component {
 				// 读取的解码后的封面格式为 base64
 				let base64 = "data:" + image.format + ";base64," +
 					window.btoa(base64String);
-				CanvasCtx.drawRect();
+				this.canvas.drawRect();
 
 				this.setState({
 					title: tags.title,
@@ -176,13 +174,6 @@ export default class App extends Component {
 						{this.state.album && 
 							<img src={this.state.album} className="album" alt="album"/>
         				}
-	        			{/*<dl>
-	        				<dd className="node-source">Source</dd>
-	        				<dd className="node-analyser">Analyser</dd>
-	        				<dd className="node-lowpass">lowpass</dd>
-	        				<dd className="node-highpass">highpass</dd>
-	        				<dd className="node-dest">dest</dd>
-	        			</dl>*/}
         			</div>
 		    		<canvas ref={(canvas) => {this.DOMCanvas = canvas}}></canvas>
 				</div>

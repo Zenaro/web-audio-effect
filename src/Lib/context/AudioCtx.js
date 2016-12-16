@@ -15,25 +15,28 @@ let AudioCtxUtil = {
 	audio: null,
 	audioCtx: null,
 	source: null, // 音频源
-	analyser: null, // 音频分析器
-	panner: null, // panner实现立体声
+	formerAnalyser: null, // 音频原始数据分析器
+	analyser: null, // 音频实时数据分析器
+	gainNode: null, // 增益节点
 	sec: 0.8, // 音量淡入淡出时长
-	bufferLength: 256, // 频域分析 fft(快速傅里叶变换)的大小,默认调整为 512
+	bufferLength: 256, // 频域分析 fft(快速傅里叶变换)的大小,默认调整为 256
 	init: function() {
 		this.audio = new Audio();
 		this.audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 		this.source = this.audioCtx.createMediaElementSource(this.audio);
+		this.formerAnalyser = this.audioCtx.createAnalyser();
+		this.formerAnalyser.fftSize = 2048;
 		this.analyser = this.audioCtx.createAnalyser();
 		this.analyser.fftSize = 2048;
-
-		// source  ->  analyser  ->  destination  播放的一条通路
 		this.gainNode = this.audioCtx.createGain();
 
-		this.source.connect(this.analyser);
-		this.analyser.connect(this.gainNode);
-		this.gainNode.connect(this.audioCtx.destination);
-		// this.source.connect(this.analyser);
-		// this.analyser.connect(this.audioCtx.destination);
+		// 挂载一个原始数据分析器
+		this.source.connect(this.formerAnalyser);
+
+		// source  -> gainNode ->  analyser  ->  destination  创造播放的一条通路
+		this.source.connect(this.gainNode);
+		this.gainNode.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -49,6 +52,7 @@ let AudioCtxUtil = {
 	getAnalyser: function() {
 		return {
 			bufferLength: this.bufferLength,
+			formerAnalyser: this.formerAnalyser,
 			analyser: this.analyser
 		}
 	},
@@ -67,13 +71,11 @@ let AudioCtxUtil = {
 	 * 淡出声音
 	 */
 	layoutSound: function() {
-		// this.gainNode.gain.value = 0;
 		let currentTime = this.audioCtx.currentTime;
 		this.gainNode.gain.linearRampToValueAtTime(0, currentTime + this.sec);
 		setTimeout(() => {
 			this.audio.pause();
-		}, this.sec * 1000); // 延时
-		// this.gainNode.gain.linearRampToValueAtTime(1, currentTime)
+		}, this.sec * 250); // 延时
 	},
 
 	/*
@@ -118,10 +120,11 @@ let AudioCtxUtil = {
 			panner.setPosition(Math.sin(index) * radius, 0, Math.cos(index) * radius);
 			index += 1 / 100;
 		}, 16);
-		this.source.connect(panner);
-		gain.gain.value = 5;
-		panner.connect(gain);
-		gain.connect(this.audioCtx.destination);
+		gain.gain.value = 10;
+		this.gainNode.connect(gain);
+		gain.connect(panner);
+		panner.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -133,8 +136,10 @@ let AudioCtxUtil = {
 		biquadFilter.type = 'lowpass'; // 低阶通过
 		biquadFilter.Q.value = 2;
 		biquadFilter.frequency.value = freq || 800; // 临界点的 Hz，默认800Hz
-		this.source.connect(biquadFilter);
-		biquadFilter.connect(this.audioCtx.destination);
+
+		this.gainNode.connect(biquadFilter);
+		biquadFilter.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -146,8 +151,9 @@ let AudioCtxUtil = {
 		biquadFilter.type = 'highpass'; // 低阶通过
 		biquadFilter.Q.value = 4;
 		biquadFilter.frequency.value = freq || 800; // 临界点的 Hz，默认800Hz
-		this.source.connect(biquadFilter);
-		biquadFilter.connect(this.audioCtx.destination);
+		this.gainNode.connect(biquadFilter);
+		biquadFilter.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -159,8 +165,9 @@ let AudioCtxUtil = {
 		biquadFilter.type = 'lowshelf'; // 低于该频率将获得 10 增益
 		biquadFilter.gain.value = 10;
 		biquadFilter.frequency.value = 600; // 临界点的 Hz，默认800Hz
-		this.source.connect(biquadFilter);
-		biquadFilter.connect(this.audioCtx.destination);
+		this.gainNode.connect(biquadFilter);
+		biquadFilter.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -172,8 +179,9 @@ let AudioCtxUtil = {
 		biquadFilter.type = 'lowshelf'; // 低于该频率将获得衰减
 		biquadFilter.gain.value = -100;
 		biquadFilter.frequency.value = 392; // 临界点的 Hz，默认800Hz
-		this.source.connect(biquadFilter);
-		biquadFilter.connect(this.audioCtx.destination);
+		this.gainNode.connect(biquadFilter);
+		biquadFilter.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -183,30 +191,24 @@ let AudioCtxUtil = {
 		this.disconnect();
 		let gain1 = this.audioCtx.createGain(),
 			gain2 = this.audioCtx.createGain(),
-			gain3 = this.audioCtx.createGain(),
-			gain4 = this.audioCtx.createGain(),
 			channelSplitter = this.audioCtx.createChannelSplitter(2),
 			channelMerger = this.audioCtx.createChannelMerger(2);
 
 		gain1.gain.value = 2;
 		gain2.gain.value = 2;
 
-		this.source.connect(gain3);
-		gain3.connect(channelSplitter);
+		this.gainNode.connect(channelSplitter);
 
-		// 2-1>2
 		channelSplitter.connect(gain1, 0);
 		gain1.connect(channelMerger, 0, 1);
 		channelSplitter.connect(channelMerger, 1, 1);
 
-		//1-2>1
 		channelSplitter.connect(gain2, 1);
 		gain2.connect(channelMerger, 0, 0);
 		channelSplitter.connect(channelMerger, 0, 0);
 
-		gain4.gain.value = 0.8;
-		channelMerger.connect(gain4);
-		gain4.connect(this.audioCtx.destination);
+		channelMerger.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	removeVocal: function() {
@@ -214,48 +216,27 @@ let AudioCtxUtil = {
 		let gain1 = this.audioCtx.createGain(),
 			gain2 = this.audioCtx.createGain(),
 			gain3 = this.audioCtx.createGain(),
-			gain4 = this.audioCtx.createGain(),
 			channelSplitter = this.audioCtx.createChannelSplitter(2),
 			channelMerger = this.audioCtx.createChannelMerger(2);
-		//     filterlow = this.audioCtx.createBiquadFilter(),
-		//     filterhigh = this.audioCtx.createBiquadFilter(),
-		//     jsNode = this.audioCtx.createScriptProcessor(2048);
-
-		// filterlow.type = filterlow.LOWPASS;
-		// filterlow.frequency.value = 20;
-		// filterlow.Q.value = 0;
-
-		// filterhigh.type = filterhigh.HIGHPASS;
-		// filterhigh.frequency.value = 20000;
-		// filterhigh.Q.value = 0;
 
 		// 反相音频组合
 		gain1.gain.value = -1;
 		gain2.gain.value = -1;
 
-		this.source.connect(gain3);
-		gain3.connect(channelSplitter);
+		this.gainNode.connect(channelSplitter);
 
-		// 2-1>2
+		// 交叉音轨，减去相同的音频部分（即人声）
 		channelSplitter.connect(gain1, 0);
 		gain1.connect(channelMerger, 0, 1);
 		channelSplitter.connect(channelMerger, 1, 1);
 
-		//1-2>1
 		channelSplitter.connect(gain2, 1);
 		gain2.connect(channelMerger, 0, 0);
 		channelSplitter.connect(channelMerger, 0, 0);
 
-		// 高低频补偿合成
-		// source.connect(filterhigh);
-		// source.connect(filterlow);
-		// filterlow.connect(channelMerger);
-		// filterhigh.connect(channelMerger);
-		// channelMerger.connect(audioContext.destination);
-		// 普通合成
-		gain4.gain.value = 1;
-		channelMerger.connect(gain4);
-		gain4.connect(this.audioCtx.destination);
+		channelMerger.connect(gain3);
+		gain3.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -273,12 +254,13 @@ let AudioCtxUtil = {
 		// 两条平行通路
 
 		// 1.source -> destination
-		this.source.connect(this.audioCtx.destination);
+		this.gainNode.connect(this.audioCtx.destination);
 
 		// 2.source -> delay -> gain -> destination
-		this.source.connect(delay);
+		this.gainNode.connect(delay);
 		delay.connect(gain);
-		gain.connect(this.audioCtx.destination);
+		gain.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -299,37 +281,24 @@ let AudioCtxUtil = {
 		}
 		shaper.curve = curve;
 		shaper.oversample = '4x';
-		this.source.connect(shaper);
+		this.gainNode.connect(shaper);
 		shaper.connect(compressor);
-		compressor.connect(this.audioCtx.destination);
-
-		/*
-			方案二： 未明显
-		let s = [],
-			l = 2048,
-			i;
-		for (i = 0; i <= l; i++) s.push(i / l * 2 - 1);
-		shaper.curve = new Float32Array(s);
-		// shaper.connect(this.audioCtx.destination);
-		//连接：source → shaper → denstination
-		this.source.connect(shaper);
-		shaper.connect(this.audioCtx.destination);
-		*/
+		compressor.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
 	 * 混响, Room Effect
 	 */
 	convolver: function() {
-		this.disconnect();
-		let compressor = this.audioCtx.createDynamicsCompressor();
-		let convolver = this.audioCtx.createConvolver();
-		let gain = this.audioCtx.createGain();
+		// this.disconnect();
+		// let compressor = this.audioCtx.createDynamicsCompressor();
+		// let convolver = this.audioCtx.createConvolver();
 
-		this.source.connect(compressor);
-		compressor.connect(convolver);
-		convolver.connect(gain);
-		gain.connect(this.audioCtx.destination);
+		// this.source.connect(compressor);
+		// compressor.connect(convolver);
+		// convolver.connect(gain);
+		// gain.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -351,8 +320,9 @@ let AudioCtxUtil = {
 
 		// 1
 		// masterGain.connect(masterCompression);
-		this.source.connect(masterCompression);
-		masterCompression.connect(this.audioCtx.destination);
+		this.gainNode.connect(masterCompression);
+		masterCompression.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 
 		// 2
 		// convolver.normalize = true;
@@ -421,16 +391,15 @@ let AudioCtxUtil = {
 		rightFilter.gain.value = 10;
 		rightFilter.frequency.value = 82; // 临界点的 Hz，
 
-		this.source.connect(splitter);
+		this.gainNode.connect(splitter);
 		splitter.connect(lGain, 0);
 		splitter.connect(rGain, 1);
 		lGain.connect(leftFilter);
 		rGain.connect(rightFilter);
 		leftFilter.connect(merger, 0, 0);
 		rightFilter.connect(merger, 0, 1);
-		// lGain.connect(merger, 0, 0);
-		// rGain.connect(merger, 0, 1);
-		merger.connect(this.audioCtx.destination);
+		merger.connect(this.analyser);
+		this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -496,9 +465,8 @@ let AudioCtxUtil = {
 	 */
 	cancelEffect: function() {
 		this.disconnect();
+		this.gainNode.connect(this.analyser);
 		this.analyser.connect(this.audioCtx.destination);
-		// this.source.connect(this.analyser);
-		// this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -506,11 +474,10 @@ let AudioCtxUtil = {
 	 * 重新指定音频到达speaker之前的路线，故要断开之前的连接
 	 */
 	disconnect: function() {
-		this.source.disconnect(0);
-		this.analyser.disconnect(0);
-		// 先断开source的连接，重新确定路径
-		this.source.connect(this.analyser);
-
+		// this.source.disconnect(0);
+		this.gainNode.disconnect(0);
+		// 断开source的连接，重新确定路径
+		// this.source.connect(this.formerAnalyser);
 		this.effectTimer && clearInterval(this.effectTimer);
 	}
 };

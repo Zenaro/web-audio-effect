@@ -307,18 +307,12 @@ export default class PlayerComponent extends Component {
 						</div>
 					</div>
 					<div className="play-ctrl">
-						<div className={this.state.vlmAdjust?"vlm-bar show":"vlm-bar"} 
-							onMouseLeave={this.offVlm}
+						<div onMouseLeave={this.offVlm}
+							className={this.state.vlmAdjust?"vlm-bar show":"vlm-bar"} 
 						>
-							<div className="barbg" 
-								onClick={this.vlmChange}
-							>
+							<div className="barbg" onClick={this.vlmChange}>
 								<div className="cur" style={{height: this.state.vlm * 100 + '%'}}>
-									<i className="btn-cur" draggable="true" 
-										onDrag={this.vlmChange} 
-										// onDragOver={this.prevent} 
-										// onDragEnd={this.vlmChange}
-									>
+									<i className="btn-cur" draggable="true" onDrag={this.vlmChange}>
 									</i>
 								</div>
 							</div>
