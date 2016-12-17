@@ -117,7 +117,7 @@ let AudioCtxUtil = {
 	 */
 	stereo: function(r) {
 		this.disconnect();
-		// this.effectTimer && clearInterval(this.effectTimer);
+		this.effectTimer && clearInterval(this.effectTimer);
 		let panner = this.audioCtx.createPanner();
 		let gain = this.audioCtx.createGain();
 
