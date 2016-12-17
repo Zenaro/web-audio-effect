@@ -115,15 +115,15 @@ let AudioCtxUtil = {
 	/*
 	 * 使用 panner 来实现立体声
 	 */
-	stereo: function() {
+	stereo: function(r) {
 		this.disconnect();
+		// this.effectTimer && clearInterval(this.effectTimer);
 		let panner = this.audioCtx.createPanner();
-
 		let gain = this.audioCtx.createGain();
 
-		panner.setOrientation(0, 0, 0, 0, 1, 0);
 		let index = 0,
-			radius = 20;
+			radius = r || 20;
+		panner.setOrientation(0, 0, 0, 0, 1, 0);
 		// 让声源绕着收听者以20的半径旋转
 		this.effectTimer = setInterval(() => {
 			panner.setPosition(Math.sin(index) * radius, 0, Math.cos(index) * radius);

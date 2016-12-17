@@ -29,6 +29,32 @@
 			&.active {
 				border: 2px solid rgba(26, 198, 217, 0.6);
 			}
+			&.on {
+				$color: #008D9A;
+				color: #fff;
+				position: relative;
+				&:before, &:after {
+					position: absolute;
+					top: 50%;
+					left: 40%;
+					content: "";
+					border-radius: 50%;
+				}
+				&:before {
+					width: 18px;
+					height: 18px;
+					box-sizing: border-box;
+					margin-top: -9px;
+					margin-left: -5px;
+					border: solid 2px $color;
+				}
+				&:after {
+					width: 8px;
+					height: 8px;
+					margin-top: -4px;
+					background: $color;
+				}
+			}
 		}
 		li > a {
 			box-sizing: border-box;

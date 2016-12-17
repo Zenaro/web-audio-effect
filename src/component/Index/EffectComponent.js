@@ -8,10 +8,12 @@ export default class EffectComponent extends Component {
 		super(props);
 		this.state = {
 			index: 0,
-			// isAsideEffect: true,
+			isOrigin: false,
 			ProWidth: 190, // 进度条长度 
+			stereoRadius: 20, // radius of stereo
 			lowpassHz: 800, // 默认800Hz
 			highpassHz: 800, // 默认800Hz
+			maxRadius: 100, // 最大Hz
 			maxHz: 3600, // 最大Hz
 			isDropdownLowpass: false,
 			isDropdownHighpass: false
@@ -21,6 +23,7 @@ export default class EffectComponent extends Component {
 
 		this.cancelEffect = this.cancelEffect.bind(this);
 		this.contrast = this.contrast.bind(this);
+		this.stereoDropdown = this.stereoDropdown.bind(this);
 		this.stereo = this.stereo.bind(this);
 
 		this.lowpassDropdown = this.lowpassDropdown.bind(this);
@@ -58,15 +61,28 @@ export default class EffectComponent extends Component {
 	}
 	contrast() {
 		this.props.switchOriginCanvas();
-		this.setState({
-			index: 1
-		});
+		this.setState((prevState) => ({
+			isOrigin: !prevState.isOrigin
+		}));
 	}
-	stereo() {
-		this.AudioCtx.stereo();
+	stereoDropdown() {
+		if (!this.state.isDropdownStereo) {
+			this.AudioCtx.stereo(this.state.stereoRaduis);
+		}
+		this.setState((prevState) => ({
+			index: 2,
+			isDropdownStereo: !prevState.isDropdownStereo,
+			isDropdownLowpass: false,
+			isDropdownHighpass: false
+		}));
+	}
+	stereo(event) {
+		let pct = event.nativeEvent.offsetX / this.state.ProWidth;
+		let radius = ~~(pct * this.state.maxRadius);
 		this.setState({
-			index: 2
+			stereoRadius: radius
 		});
+		this.AudioCtx.stereo(radius);
 	}
 	lowpassDropdown() {
 		if (!this.state.isDropdownLowpass) {
@@ -75,6 +91,7 @@ export default class EffectComponent extends Component {
 		this.setState((prevState) => ({
 			index: 3,
 			isDropdownLowpass: !prevState.isDropdownLowpass,
+			isDropdownStereo: false,
 			isDropdownHighpass: false
 		}));
 	}
@@ -93,6 +110,7 @@ export default class EffectComponent extends Component {
 		this.setState((prevState) => ({
 			index: 4,
 			isDropdownHighpass: !prevState.isDropdownHighpass,
+			isDropdownStereo: false,
 			isDropdownLowpass: false
 		}));
 	}
@@ -160,11 +178,16 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===0 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.cancelEffect}>原声</a>
 					</li>
-					<li className={this.state.index===1 ? 'active' : ''}>
+					<li className={this.state.isOrigin ? 'on' : ''}>
 						<a href="javascript:void(0);" onClick={this.contrast}>频域对比</a>
 					</li>
-					<li className={this.state.index===2 ? 'active' : ''}>
-						<a href="javascript:void(0);" onClick={this.stereo}>空间环绕声</a>
+					<li className={this.state.index===2 ? 'active' : ''} onClick={this.stop}>
+						<a href="javascript:void(0)" onClick={this.stereoDropdown}>空间环绕声（<span>{this.state.stereoRadius}</span>）</a>
+						<div className={this.state.isDropdownStereo ? 'dropdown show' : 'dropdown'} onClick={this.stereo}>
+							<div className="progress">
+								<div className="progress-bar" style={{width: this.state.stereoRadius / this.state.maxRadius * 100 + '%'}}></div>
+							</div>
+						</div>
 					</li>
 					<li className={this.state.index===3 ? 'active' : ''} onClick={this.stop}>
 						<a href="javascript:void(0)" onClick={this.lowpassDropdown}>低通滤波（<span>{this.state.lowpassHz}</span>Hz）</a>

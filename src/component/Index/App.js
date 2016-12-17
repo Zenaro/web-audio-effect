@@ -115,7 +115,6 @@ export default class App extends Component {
 		});
 	}
 	switchOriginCanvas() {
-		console.log(this.state.isOriginCanvas);
 		this.setState((prevState) => ({
 			isOriginCanvas: !prevState.isOriginCanvas
 		}));
