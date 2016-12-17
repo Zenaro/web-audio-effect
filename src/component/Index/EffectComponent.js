@@ -49,6 +49,7 @@ export default class EffectComponent extends Component {
 	}
 	reset() {
 		this.setState({
+			isDropdownStereo: false,
 			isDropdownLowpass: false,
 			isDropdownHighpass: false
 		});
