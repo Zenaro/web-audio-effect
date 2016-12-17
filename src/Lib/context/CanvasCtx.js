@@ -52,7 +52,7 @@ export default class CanvasComponent {
 		for (let i = 0, cellW = 3, length = this.bufferLength; i < length; i += cellW) {
 
 			// requestAnimationFrame(() => {
-			let y = this.freqByteData[length - i] / 8;
+			let y = this.freqByteData[length - i] / 4;
 			y = y > 1 ? y : 1;
 			this.canvasCtx.fillStyle = 'rgb(255, 255, 255)';
 			this.canvasCtx.fillRect(i / cellW * (cellW + 1), this.HEIGHT - y, cellW, y);

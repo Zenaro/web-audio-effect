@@ -75,10 +75,20 @@ i, em {
 		$width: 1040px;
 		position: absolute;
 		width: $width;
-		height: 150px;
+		height: 100px;
 		left: 50%;
-		bottom: 10px;
 		margin-left: -$width / 2;
+		&.origin-canvas {
+			bottom: 130px;
+			opacity: 0;
+			transition: opacity 1s;
+			&.fadeIn {
+				opacity: 0.5;
+			}
+		}
+		&.canvas {
+			bottom: 10px;
+		}
 	}
 }
 

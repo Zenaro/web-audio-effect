@@ -47,12 +47,21 @@ let AudioCtxUtil = {
 	},
 
 	/*
+	 * 获取origin analyser对象及fft参数，canvas画图用
+	 */
+	getOriginAnalyser: function() {
+		return {
+			bufferLength: this.bufferLength,
+			analyser: this.formerAnalyser
+		}
+	},
+
+	/*
 	 * 获取analyser对象及fft参数，canvas画图用
 	 */
 	getAnalyser: function() {
 		return {
 			bufferLength: this.bufferLength,
-			formerAnalyser: this.formerAnalyser,
 			analyser: this.analyser
 		}
 	},
