@@ -217,17 +217,6 @@ let AudioCtxUtil = {
 			gain4 = this.audioCtx.createGain(),
 			channelSplitter = this.audioCtx.createChannelSplitter(2),
 			channelMerger = this.audioCtx.createChannelMerger(2);
-		//     filterlow = this.audioCtx.createBiquadFilter(),
-		//     filterhigh = this.audioCtx.createBiquadFilter(),
-		//     jsNode = this.audioCtx.createScriptProcessor(2048);
-
-		// filterlow.type = filterlow.LOWPASS;
-		// filterlow.frequency.value = 20;
-		// filterlow.Q.value = 0;
-
-		// filterhigh.type = filterhigh.HIGHPASS;
-		// filterhigh.frequency.value = 20000;
-		// filterhigh.Q.value = 0;
 
 		// 反相音频组合
 		gain1.gain.value = -1;
@@ -236,23 +225,14 @@ let AudioCtxUtil = {
 		this.source.connect(gain3);
 		gain3.connect(channelSplitter);
 
-		// 2-1>2
 		channelSplitter.connect(gain1, 0);
 		gain1.connect(channelMerger, 0, 1);
 		channelSplitter.connect(channelMerger, 1, 1);
 
-		//1-2>1
 		channelSplitter.connect(gain2, 1);
 		gain2.connect(channelMerger, 0, 0);
 		channelSplitter.connect(channelMerger, 0, 0);
 
-		// 高低频补偿合成
-		// source.connect(filterhigh);
-		// source.connect(filterlow);
-		// filterlow.connect(channelMerger);
-		// filterhigh.connect(channelMerger);
-		// channelMerger.connect(audioContext.destination);
-		// 普通合成
 		gain4.gain.value = 1;
 		channelMerger.connect(gain4);
 		gain4.connect(this.audioCtx.destination);
@@ -461,8 +441,8 @@ let AudioCtxUtil = {
 	 */
 	ktvOnline: function() {
 		navigator.getUserMedia = navigator.getUserMedia ||
-				navigator.webkitGetUserMedia ||
-				navigator.mozGetUserMedia;
+			navigator.webkitGetUserMedia ||
+			navigator.mozGetUserMedia;
 		if (navigator.getUserMedia) {
 			console.log('getUserMedia supported.');
 			navigator.getUserMedia({
@@ -477,7 +457,9 @@ let AudioCtxUtil = {
 				// mediaRecorder.stop();
 				mediaRecorder.onstop = (e) => {
 					let clipName = prompt('Enter a name for your sound clip');
-					let blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
+					let blob = new Blob(chunks, {
+						'type': 'audio/ogg; codecs=opus'
+					})
 					let audioURL = window.URL.createObjectURL(blob);
 					// this.audio.src = audioURL;
 				}

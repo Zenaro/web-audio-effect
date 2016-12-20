@@ -27,8 +27,6 @@ export default class EffectComponent extends Component {
 		this.highpassFilter = this.highpassFilter.bind(this);
 		this.removeVocal = this.removeVocal.bind(this);
 		this.enhanceVocal = this.enhanceVocal.bind(this);
-		// this.lowshelfEnhance = this.lowshelfEnhance.bind(this);
-		// this.lowshelfWeaken = this.lowshelfWeaken.bind(this);
 		this.waveShaper = this.waveShaper.bind(this);
 		this.compressor = this.compressor.bind(this);
 		this.delay = this.delay.bind(this);
@@ -40,7 +38,6 @@ export default class EffectComponent extends Component {
 	}
 	stop(event) {
 		event.stopPropagation();
-		// event.nativeEvent.stopImmediatePropagation();
 	}
 	switchEffect() {
 		// this.setState((prevState) => ({
@@ -194,9 +191,9 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===9 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.splitterMerger}>splitter混响</a>
 					</li>
-					<li className={this.state.index===10 ? 'active' : ''}>
+					{/*<li className={this.state.index===10 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.ktvOnline}>在线 ktv</a>
-					</li>
+					</li>*/}
 				</ul>
 			</div>
 		);
