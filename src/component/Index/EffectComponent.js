@@ -32,16 +32,11 @@ export default class EffectComponent extends Component {
 		this.highpassFilter = this.highpassFilter.bind(this);
 
 		this.enhanceVocal = this.enhanceVocal.bind(this);
-<<<<<<< HEAD
-=======
 		this.removeVocal = this.removeVocal.bind(this);
-
->>>>>>> 48dbb09465f8fa26a23147dd6c0ab72970711cfa
 		this.waveShaper = this.waveShaper.bind(this);
 		this.compressor = this.compressor.bind(this);
 		this.delay = this.delay.bind(this);
 		this.splitterMerger = this.splitterMerger.bind(this);
-		this.ktvOnline = this.ktvOnline.bind(this);
 	}
 	componentDidMount() {
 
@@ -161,12 +156,6 @@ export default class EffectComponent extends Component {
 		});
 		this.AudioCtx.splitterMerger();
 	}
-	ktvOnline() {
-		this.setState({
-			index: 11
-		});
-		this.AudioCtx.ktvOnline();
-	}
 	render() {
 		let className = 'effect-component aside ';
 		this.props.isLayin ?
@@ -226,13 +215,6 @@ export default class EffectComponent extends Component {
 					<li className={this.state.index===10 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.splitterMerger}>splitter混响</a>
 					</li>
-<<<<<<< HEAD
-					{/*<li className={this.state.index===10 ? 'active' : ''}>
-=======
-					{/*<li className={this.state.index===11 ? 'active' : ''}>
->>>>>>> 48dbb09465f8fa26a23147dd6c0ab72970711cfa
-						<a href="javascript:void(0);" onClick={this.ktvOnline}>在线 ktv</a>
-					</li>*/}
 				</ul>
 			</div>
 		);

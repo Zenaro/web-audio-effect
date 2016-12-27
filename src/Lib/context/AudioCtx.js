@@ -11,7 +11,7 @@
  */
 
 // 自定义播放器组件类
-let AudioCtxUtil = {
+module.exports = {
 	audio: null,
 	audioCtx: null,
 	source: null, // 音频源
@@ -234,10 +234,7 @@ let AudioCtxUtil = {
 
 		this.gainNode.connect(channelSplitter);
 
-<<<<<<< HEAD
-=======
 		// 交叉音轨，减去相同的音频部分（即人声）
->>>>>>> 48dbb09465f8fa26a23147dd6c0ab72970711cfa
 		channelSplitter.connect(gain1, 0);
 		gain1.connect(channelMerger, 0, 1);
 		channelSplitter.connect(channelMerger, 1, 1);
@@ -246,15 +243,9 @@ let AudioCtxUtil = {
 		gain2.connect(channelMerger, 0, 0);
 		channelSplitter.connect(channelMerger, 0, 0);
 
-<<<<<<< HEAD
-		gain4.gain.value = 1;
-		channelMerger.connect(gain4);
-		gain4.connect(this.audioCtx.destination);
-=======
 		channelMerger.connect(gain3);
 		gain3.connect(this.analyser);
 		this.analyser.connect(this.audioCtx.destination);
->>>>>>> 48dbb09465f8fa26a23147dd6c0ab72970711cfa
 	},
 
 	/*
@@ -443,43 +434,10 @@ let AudioCtxUtil = {
 	// 	oscillator.start(0);
 	// },
 
-	/*
-	 *
-	 */
-	ktvOnline: function() {
-		navigator.getUserMedia = navigator.getUserMedia ||
-			navigator.webkitGetUserMedia ||
-			navigator.mozGetUserMedia;
-		if (navigator.getUserMedia) {
-			console.log('getUserMedia supported.');
-			navigator.getUserMedia({
-				audio: true
-			}, (stream) => {
-				let chunks = [];
-				let mediaRecorder = new window.MediaRecorder(stream);
-				mediaRecorder.start();
-				mediaRecorder.ondataavailable = (e) => {
-					chunks.push(e.data);
-				};
-				// mediaRecorder.stop();
-				mediaRecorder.onstop = (e) => {
-					let clipName = prompt('Enter a name for your sound clip');
-					let blob = new Blob(chunks, {
-						'type': 'audio/ogg; codecs=opus'
-					})
-					let audioURL = window.URL.createObjectURL(blob);
-					// this.audio.src = audioURL;
-				}
+	// ktvOnline: function() {
 
-			}, (err) => {
-				console.log('The following gUM error occured: ' + err);
-			});
 
-		} else {
-			console.log('getUserMedia not supported on your browser');
-		}
-
-	},
+	// },
 	/*
 	 * 清除音效，还原原声 
 	 */
@@ -501,5 +459,3 @@ let AudioCtxUtil = {
 		this.effectTimer && clearInterval(this.effectTimer);
 	}
 };
-
-module.exports = AudioCtxUtil;

@@ -172,9 +172,9 @@ export default class App extends Component {
 	render() {
 		let wrapStyle = 'wrap ';
 		let originCanvasStyle = 'origin-canvas ';
-		this.state.isPicReady ? 
+		this.state.isPicReady ?
 			wrapStyle += 'float-in' : '';
-		this.state.isOriginCanvas ? 
+		this.state.isOriginCanvas ?
 			originCanvasStyle += 'fadeIn' : '';
 		return (
 			<div className="container" onClick={this.isSlide}>
@@ -185,6 +185,7 @@ export default class App extends Component {
         			switchOriginCanvas={this.switchOriginCanvas}/>
         		<div className="maintain" onDragEnter={this.onDragModal}>
         			<div className={wrapStyle}>
+        				<i className="icon-recorder" onClick={this.recorder}>ktv</i>
 						{this.state.album && 
 							<img src={this.state.album} className="album" alt="album"/>
         				}
