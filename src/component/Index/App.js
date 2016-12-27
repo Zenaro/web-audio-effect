@@ -13,6 +13,7 @@ import Player from './PlayerComponent';
 
 AudioCtx.init();
 const Audio = AudioCtx.getAudio();
+const OriginAnalyser = AudioCtx.getOriginAnalyser();
 const AudioAnalyser = AudioCtx.getAnalyser();
 
 export default class App extends Component {
@@ -28,16 +29,19 @@ export default class App extends Component {
 			isDragEnter: false,
 			isPicReady: false,
 			isLayinList: false,
-			isLayinEffect: false
+			isLayinEffect: false,
+			isOriginCanvas: false
 		}
 		this.restart = this.restart.bind(this);
 		this.isSlide = this.isSlide.bind(this);
 		this.onDragModal = this.onDragModal.bind(this);
 		this.offDragModal = this.offDragModal.bind(this);
 		this.filesChange = this.filesChange.bind(this);
+		this.switchOriginCanvas = this.switchOriginCanvas.bind(this);
 	}
 	componentDidMount() {
-		CanvasCtx.init(AudioAnalyser, this.DOMCanvas);
+		this.OriginCanvas = new CanvasCtx(this.DOMOriginCanvas, OriginAnalyser);
+		this.Canvas = new CanvasCtx(this.DOMCanvas, AudioAnalyser);
 		this.setState({
 			isLayinList: true,
 			isLayinEffect: true
@@ -100,17 +104,20 @@ export default class App extends Component {
 				newLength = this.state.FileList.length;
 			if (originLength == 0 && newLength > 0) {
 				this.restart(0);
-				// CanvasCtx.drawRect();
 
 			} else if (originLength && originLength < newLength) {
 				index = originLength;
 				this.restart(originLength);
-				// CanvasCtx.drawRect();
 
 			} else {
 				alert('The files you dragged may no be the audio');
 			}
 		});
+	}
+	switchOriginCanvas() {
+		this.setState((prevState) => ({
+			isOriginCanvas: !prevState.isOriginCanvas
+		}));
 	}
 	restart(index) {
 		let title = this.state.FileList[index].title,
@@ -132,7 +139,8 @@ export default class App extends Component {
 				// 读取的解码后的封面格式为 base64
 				let base64 = "data:" + image.format + ";base64," +
 					window.btoa(base64String);
-				CanvasCtx.drawRect();
+				this.Canvas.drawRect();
+				this.OriginCanvas.drawRect();
 
 				this.setState({
 					title: tags.title,
@@ -163,28 +171,30 @@ export default class App extends Component {
 	}
 	render() {
 		let wrapStyle = 'wrap ';
+		let originCanvasStyle = 'origin-canvas ';
 		this.state.isPicReady ? 
-			wrapStyle += 'float-in' : wrapStyle;
+			wrapStyle += 'float-in' : '';
+		this.state.isOriginCanvas ? 
+			originCanvasStyle += 'fadeIn' : '';
 		return (
 			<div className="container" onClick={this.isSlide}>
         		<List sign={this.state.sign} items={this.state.FileList} 
         			restart={this.restart} isLayin={this.state.isLayinList}
         		/>
-        		<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}/>
+        		<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}
+        			switchOriginCanvas={this.switchOriginCanvas}/>
         		<div className="maintain" onDragEnter={this.onDragModal}>
         			<div className={wrapStyle}>
 						{this.state.album && 
 							<img src={this.state.album} className="album" alt="album"/>
         				}
-	        			{/*<dl>
-	        				<dd className="node-source">Source</dd>
-	        				<dd className="node-analyser">Analyser</dd>
-	        				<dd className="node-lowpass">lowpass</dd>
-	        				<dd className="node-highpass">highpass</dd>
-	        				<dd className="node-dest">dest</dd>
-	        			</dl>*/}
         			</div>
-		    		<canvas ref={(canvas) => {this.DOMCanvas = canvas}}></canvas>
+		    		<canvas className={originCanvasStyle} 
+		    			ref={(canvas) => {this.DOMOriginCanvas = canvas}}>
+		    		</canvas>
+		    		<canvas className="canvas" 
+		    			ref={(canvas) => {this.DOMCanvas = canvas}}>
+		    		</canvas>
 				</div>
 				<div className={this.state.isDragEnter ? 'drag-component show' : 'drag-component'} 
 					onDragOver={this.onDragover} onDrop={this.offDragModal} onClick={this.stop}>
