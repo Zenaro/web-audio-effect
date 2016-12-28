@@ -11,6 +11,7 @@ import Recorder from '../../Lib/context/Recorder';
 import List from './ListComponent';
 import Effect from './EffectComponent';
 import Player from './PlayerComponent';
+import Speaker from './SpeakerComponent';
 
 AudioCtx.init();
 const Audio = AudioCtx.getAudio();
@@ -31,7 +32,8 @@ export default class App extends Component {
 			isPicReady: false,
 			isLayinList: false,
 			isLayinEffect: false,
-			isOriginCanvas: false
+			isOriginCanvas: false,
+			isMedia: false,
 		}
 		this.restart = this.restart.bind(this);
 		this.isSlide = this.isSlide.bind(this);
@@ -39,6 +41,7 @@ export default class App extends Component {
 		this.offDragModal = this.offDragModal.bind(this);
 		this.filesChange = this.filesChange.bind(this);
 		this.switchOriginCanvas = this.switchOriginCanvas.bind(this);
+		this.switchMedia = this.switchMedia.bind(this);
 	}
 	componentDidMount() {
 		this.OriginCanvas = new CanvasCtx(this.DOMOriginCanvas, OriginAnalyser);
@@ -170,33 +173,51 @@ export default class App extends Component {
 		// }
 		AudioCtx.layinSound();
 	}
-	record() {
-		Recorder.init();
+	switchMedia(event) {
+		event.stopPropagation();
+		this.setState((prevState) => ({
+			isMedia: !prevState .isMedia
+		}));
+		console.log(this.state.isMedia);
+		// Recorder.init();
 		// console.log(Recorder);
 	}
 	render() {
 		let wrapStyle = 'wrap ';
 		let originCanvasStyle = 'origin-canvas ';
+		let mediaStyle = ' ';
 		this.state.isPicReady ?
 			wrapStyle += 'float-in' : '';
 		this.state.isOriginCanvas ?
 			originCanvasStyle += 'fadeIn' : '';
+		this.state.isMedia ?
+			mediaStyle += 'slide-up' : 
+			mediaStyle += 'slide-down';
 		return (
 			<div className="container" onClick={this.isSlide}>
-        		<List sign={this.state.sign} items={this.state.FileList} 
-        			restart={this.restart} isLayin={this.state.isLayinList}
-        		/>
-        		<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}
-        			switchOriginCanvas={this.switchOriginCanvas}/>
+				<div className={'media-index' + mediaStyle}>
+					<List sign={this.state.sign} items={this.state.FileList} 
+	        			restart={this.restart} isLayin={this.state.isLayinList}
+	        		/>
+	        		<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}
+        				switchOriginCanvas={this.switchOriginCanvas}/>
+					<Player audio={this.audio} audioCtx={AudioCtx} offDragModal={this.offDragModal}
+							album={this.state.album} title={this.state.title} artist={this.state.artist}
+							sign={this.state.sign} listLength={this.state.FileList.length}
+							restart={this.restart}
+					/>
+				</div>
+				<div className={'media-speaker' + mediaStyle}>
+					<Speaker/>
+				</div>
         		<div className="maintain" onDragEnter={this.onDragModal}>
-        			<div className={wrapStyle}>
+        			<div className={wrapStyle} onClick={this.switchMedia}>
+        				<i className="fa fa-microphone icon-microphone" aria-hidden="true">
+	        			</i>
 						{this.state.album && 
 							<img src={this.state.album} className="album" alt="album"/>
         				}
         			</div>
-        			<i className="fa fa-lg fa-microphone icon-microphone" aria-hidden="true"
-        				onClick={this.record}>
-        			</i>
 		    		<canvas className={originCanvasStyle} 
 		    			ref={(canvas) => {this.DOMOriginCanvas = canvas}}>
 		    		</canvas>
@@ -208,11 +229,6 @@ export default class App extends Component {
 					onDragOver={this.onDragover} onDrop={this.offDragModal} onClick={this.stop}>
 		        	<input type="file" multiple="multiple" onChange={this.filesChange}/>
 				</div>
-				<Player audio={this.audio} audioCtx={AudioCtx} offDragModal={this.offDragModal}
-						album={this.state.album} title={this.state.title} artist={this.state.artist}
-						sign={this.state.sign} listLength={this.state.FileList.length}
-						restart={this.restart}
-				/>
       		</div>
 		);
 	}

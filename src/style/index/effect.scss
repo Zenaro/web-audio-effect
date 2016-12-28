@@ -2,13 +2,6 @@
 	$size: 260px;
 	width: $size;
 	left: 100%;
-	// 右侧呼出功能按钮
-	a.btn-func {	
-		display: block;
-		position: absolute;
-		right: 26px;
-		top: 26px;
-	}
 	&.slide-in {
 		transform: translateX(-$size);
 	}

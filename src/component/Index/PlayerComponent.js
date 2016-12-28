@@ -261,7 +261,7 @@ export default class PlayerComponent extends Component {
 	}
 	render() {
 		return (
-			<div className="audio-player" onClick={this.stop} onDragLeave={this.leave}>
+			<div className="audio-player bottom-bar" onClick={this.stop} onDragLeave={this.leave}>
 				<div className="audio-player-core">
 					<div className="play-btns">
 						<a href="javascript:void(0);" className="prv" onClick={this.prevTrack} 

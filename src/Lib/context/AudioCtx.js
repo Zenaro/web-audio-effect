@@ -232,7 +232,8 @@ module.exports = {
 		gain1.gain.value = -1;
 		gain2.gain.value = -1;
 
-		this.gainNode.connect(channelSplitter);
+		this.gainNode.connect(this.analyser);
+		this.analyser.connect(channelSplitter);
 
 		// 交叉音轨，减去相同的音频部分（即人声）
 		channelSplitter.connect(gain1, 0);
@@ -244,8 +245,9 @@ module.exports = {
 		channelSplitter.connect(channelMerger, 0, 0);
 
 		channelMerger.connect(gain3);
-		gain3.connect(this.analyser);
-		this.analyser.connect(this.audioCtx.destination);
+		gain3.connect(this.audioCtx.destination);
+		// gain3.connect(this.analyser);
+		// this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
@@ -454,6 +456,7 @@ module.exports = {
 	disconnect: function() {
 		// this.source.disconnect(0);
 		this.gainNode.disconnect(0);
+		this.analyser.disconnect(0);
 		// 断开source的连接，重新确定路径
 		// this.source.connect(this.formerAnalyser);
 		this.effectTimer && clearInterval(this.effectTimer);

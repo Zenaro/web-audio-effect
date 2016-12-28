@@ -1,0 +1,12 @@
+.speaker {
+	&-core {
+		$height: 50px;
+		margin: 0 auto;
+		width: 250px;
+		height: $height;
+		.btn-speaker {
+			line-height: $height; 
+			font-size: 25px;
+		}
+	}
+}

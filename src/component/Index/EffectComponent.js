@@ -163,9 +163,6 @@ export default class EffectComponent extends Component {
 			className += 'slide-out';
 		return (
 			<div className={className} onClick={this.stop}>
-				<a href="javascript:void(0)" className="btn-func">
-					<i className="icon-effect">❔</i>
-				</a>
 				<ul className="btn-group" onClick={this.reset}>
 					<li className={this.state.index===0 ? 'active' : ''}>
 						<a href="javascript:void(0);" onClick={this.cancelEffect}>原声</a>
