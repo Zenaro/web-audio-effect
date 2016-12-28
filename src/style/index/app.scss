@@ -1,3 +1,4 @@
+@import './font.scss';
 html, body, ul, li, dl, dt, dd {
 	margin: 0;
 	padding: 0;
@@ -43,13 +44,14 @@ i, em {
 	-moz-perspective: 700; 
 	-webkit-perspective: 700; 
 	.wrap {
-		position: absolute;
 		left: 50%;
 		top: 50%;
 		$deg: 45deg;
 		opacity: 0.6;
+		cursor: pointer;
 		width: $min-width;
 		height: $min-width;
+		position: absolute;
 		margin-left: -$min-width / 2;
 		margin-top: -$min-width / 2 - 100px;
 		transform: rotateX($deg);
@@ -71,12 +73,12 @@ i, em {
 			display: block;
 			cursor: pointer;
 		}
-		i.icon-recorder {
-			top: 50%;
-			left: 50%;
-			font-size: 20px;
-			position: absolute;
-		}
+	}
+	i.icon-microphone {
+		top: 50%;
+		left: 50%;
+		cursor: pointer;
+		position: absolute;
 	}
 	canvas {
 		$width: 1040px;

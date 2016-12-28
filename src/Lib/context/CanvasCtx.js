@@ -9,11 +9,6 @@ export default class CanvasComponent {
 		this.dataArray = new Float32Array(this.bufferLength);
 		this.freqByteData = new Uint8Array(this.AudioAnalyser.frequencyBinCount);
 	}
-	init() { /* 获取analyser的三个必要参数，以确保draw方法的运行 */
-
-		// this.canvasCtx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
-
-	}
 	drawWave() {
 		requestAnimationFrame(this.drawWave.bind(this));
 

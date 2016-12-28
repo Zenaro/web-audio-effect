@@ -6,6 +6,7 @@ import '../../style/index/app.scss';
 import ID3 from '../../Lib/id3/id3';
 import AudioCtx from '../../Lib/context/AudioCtx';
 import CanvasCtx from '../../Lib/context/CanvasCtx';
+import Recorder from '../../Lib/context/Recorder';
 
 import List from './ListComponent';
 import Effect from './EffectComponent';
@@ -169,6 +170,10 @@ export default class App extends Component {
 		// }
 		AudioCtx.layinSound();
 	}
+	record() {
+		Recorder.init();
+		// console.log(Recorder);
+	}
 	render() {
 		let wrapStyle = 'wrap ';
 		let originCanvasStyle = 'origin-canvas ';
@@ -185,11 +190,13 @@ export default class App extends Component {
         			switchOriginCanvas={this.switchOriginCanvas}/>
         		<div className="maintain" onDragEnter={this.onDragModal}>
         			<div className={wrapStyle}>
-        				<i className="icon-recorder" onClick={this.recorder}>ktv</i>
 						{this.state.album && 
 							<img src={this.state.album} className="album" alt="album"/>
         				}
         			</div>
+        			<i className="fa fa-lg fa-microphone icon-microphone" aria-hidden="true"
+        				onClick={this.record}>
+        			</i>
 		    		<canvas className={originCanvasStyle} 
 		    			ref={(canvas) => {this.DOMOriginCanvas = canvas}}>
 		    		</canvas>

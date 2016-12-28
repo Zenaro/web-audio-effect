@@ -1,9 +1,7 @@
-export default class Recorder {
-	constructor() {
-		this.mediaRecorder = null;
-		this.chunks = [];
-	}
-	init() {
+module.exports = {
+	mediaRecorder: null,
+	chunks: [],
+	init: function() {
 		navigator.getUserMedia = navigator.getUserMedia ||
 			navigator.webkitGetUserMedia ||
 			navigator.mozGetUserMedia;
@@ -19,7 +17,7 @@ export default class Recorder {
 				};
 				this.mediaRecorder.onstop = (e) => {
 					let clipName = prompt('Enter a name for your sound clip');
-					let blob = new Blob(chunks, {
+					let blob = new Blob(this.chunks, {
 						'type': 'audio/ogg; codecs=opus'
 					})
 					let audioURL = window.URL.createObjectURL(blob);
@@ -32,8 +30,8 @@ export default class Recorder {
 		} else {
 			console.log('getUserMedia not supported on your browser');
 		}
-	}
-	stop() {
+	},
+	stop: function() {
 		this.mediaRecorder.stop();
 	}
 }
