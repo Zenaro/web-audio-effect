@@ -4,9 +4,16 @@
 		margin: 0 auto;
 		width: 250px;
 		height: $height;
+		color: #fff;
+		.btn-restart {
+
+		}
 		.btn-speaker {
 			line-height: $height; 
 			font-size: 25px;
+		}
+		.btn-over {
+			
 		}
 	}
 }

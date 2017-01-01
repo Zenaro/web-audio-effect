@@ -12,9 +12,9 @@ export default class SpeakerComponent extends Component {
 		return (
 			<div className="speaker bottom-bar">
 				<div className="speaker-core">
-					<a href="javascript:void(0)">重唱</a>
+					<a href="javascript:void(0)" className="btn-restart">重唱</a>
 					<a href="javascript:void(0)" className="fa fa-microphone btn-speaker"></a>
-					<a href="javascript:void(0)">结束</a>
+					<a href="javascript:void(0)" className="btn-over">结束</a>
 				</div>		
 			</div>
 		);
