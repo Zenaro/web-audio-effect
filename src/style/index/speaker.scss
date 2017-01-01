@@ -5,15 +5,21 @@
 		width: 250px;
 		height: $height;
 		color: #fff;
+		a {
+			display: block;
+			text-align: center;
+			line-height: $height;
+		}
 		.btn-restart {
-
+			float: left;
 		}
 		.btn-speaker {
+			display: block;
 			line-height: $height; 
 			font-size: 25px;
 		}
 		.btn-over {
-			
+			float: right;
 		}
 	}
 }

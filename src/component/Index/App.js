@@ -208,7 +208,7 @@ export default class App extends Component {
 					/>
 				</div>
 				<div className={'media-speaker' + mediaStyle}>
-					<Speaker/>
+					<Speaker Recorder={Recorder}/>
 				</div>
         		<div className="maintain" onDragEnter={this.onDragModal}>
         			<div className={wrapStyle} onClick={this.switchMedia}>
