@@ -180,11 +180,12 @@ export default class App extends Component {
 	}
 	switchMedia(event) {
 		event.stopPropagation();
+		if (!this.state.isMedia) {
+			AudioCtx.layoutSound();
+		}
 		this.setState((prevState) => ({
 			isMedia: !prevState .isMedia
 		}));
-		// Recorder.init();
-		// console.log(Recorder);
 	}
 	render() {
 		let wrapStyle = 'wrap ';
@@ -213,7 +214,7 @@ export default class App extends Component {
 				</div>
 				<div className={'media-speaker' + mediaStyle} onClick={this.stop}>
 					<Speaker Recorder={Recorder} filesAdd={this.filesAdd} Audio={this.audio}
-						switchMedia={this.switchMedia}/>
+						AudioCtx={AudioCtx} switchMedia={this.switchMedia}/>
 				</div>
         		<div className="maintain" onDragEnter={this.onDragModal}>
         			<div className={wrapStyle} onClick={this.switchMedia}>

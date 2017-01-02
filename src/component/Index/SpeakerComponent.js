@@ -16,6 +16,8 @@ export default class SpeakerComponent extends Component {
 	restart() {
 		this.props.Audio.currentTime = 0;
 		this.Recorder.init(this.props.filesAdd);
+		this.props.AudioCtx.layinSound();
+		this.props.AudioCtx.removeVocal();
 	}
 	finish(event) {
 		this.Recorder.stop();
@@ -24,6 +26,8 @@ export default class SpeakerComponent extends Component {
 	record() {
 		this.props.Audio.currentTime = 0;
 		this.Recorder.init(this.props.filesAdd);
+		this.props.AudioCtx.layinSound();
+		this.props.AudioCtx.removeVocal();
 	}
 	render() {
 		return (
