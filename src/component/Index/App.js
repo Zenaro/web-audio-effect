@@ -180,6 +180,7 @@ export default class App extends Component {
 	}
 	switchMedia(event) {
 		event.stopPropagation();
+		if (!this.audio.src) return;
 		if (!this.state.isMedia) {
 			AudioCtx.layoutSound();
 		}

@@ -1,4 +1,53 @@
 .speaker {
+	.progress {
+		$color: #FC8051;
+		$size: 900px;
+		width: $size;
+		left: 50%;
+		top: -120px;
+		margin-left: -$size / 2;
+		position: absolute;
+		&-bar {
+			height: 2px;
+			border-radius: 4px;
+			background: $color;
+			display: block;
+		}
+		&-info {
+			color: #ddd;
+			padding: 4px 20px;
+			@keyframes loop {
+				0% {
+					opacity: 0;
+				}
+				50% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			&:before {
+				content: "";
+				width: 8px;
+				height: 8px;
+				display: block;
+				left: 5px;
+				top: 13px;
+				position: absolute;
+				border-radius: 50%;
+				background: $color;
+				animation: loop 2s infinite;
+			}
+			strong {
+				font-weight: normal;
+				margin-left: 5px;
+			}
+			.pull-right {
+				float: right;
+			}
+		}
+	}
 	&-core {
 		$height: 50px;
 		margin: 0 auto;
