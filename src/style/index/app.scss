@@ -133,27 +133,16 @@ i, em {
 	  	z-index: 2;
 	  	position: absolute;
 	  	font-size: 14px;
-	  	background: rgba(30, 30, 30, 0.4);
+	  	// background: rgba(30, 30, 30, 0.4);
+	  	background: #0C2326;
 	}
 }
 .media-index {
-	$height: 620px;
 	&.slide-up {
 		transform: translateY(-100%);
 	}
 	&.slide-down {
 		transform: translateY(0);
-	}
-	.aside {
-		height: $height;
-		padding: 10px;
-		z-index: 1;
-		top: 0;
-		color: #aaa;
-		position: absolute;
-		transition: 0.6s all;
-		box-sizing: border-box;
-		background: rgba(0, 0, 0, 0);
 	}
 }
 
@@ -183,4 +172,16 @@ i, em {
 		height: 100%;
 		opacity: 0;
 	}
+}
+
+.aside {
+	height: 620px;
+	padding: 10px;
+	z-index: 1;
+	top: 0;
+	color: #aaa;
+	position: absolute;
+	transition: 0.6s all;
+	box-sizing: border-box;
+	background: rgba(0, 0, 0, 0);
 }

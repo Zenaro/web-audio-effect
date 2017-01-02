@@ -39,7 +39,7 @@ export default class App extends Component {
 		this.isSlide = this.isSlide.bind(this);
 		this.onDragModal = this.onDragModal.bind(this);
 		this.offDragModal = this.offDragModal.bind(this);
-		this.filesChange = this.filesChange.bind(this);
+		this.filesAdd = this.filesAdd.bind(this);
 		this.switchOriginCanvas = this.switchOriginCanvas.bind(this);
 		this.switchMedia = this.switchMedia.bind(this);
 	}
@@ -80,23 +80,28 @@ export default class App extends Component {
 			isDragEnter: false
 		});
 	}
-	filesChange(event) {
-		this.setState({
-			isDragEnter: false
-		});
-		let files = event.target.files;
+	filesAdd(event, file) {
 		let newFileList = [];
+		if (file) {
+			newFileList.push(file);
 
-		for (let i = files.length - 1, file = null, title = '', src = ''; i >= 0; i--) {
-			if (files[i].type.indexOf('audio') < 0) continue;
-			file = files[i];
-			title = files[i].name.substr(0, files[i].name.lastIndexOf('.'));
-			src = URL.createObjectURL(files[i]);
-			newFileList.push({
-				'file': file,
-				'title': title,
-				'src': src
+		} else {
+			this.setState({
+				isDragEnter: false
 			});
+			let files = event.target.files;
+
+			for (let i = files.length - 1, file = null, title = '', src = ''; i >= 0; i--) {
+				if (files[i].type.indexOf('audio') < 0) continue;
+				file = files[i];
+				title = files[i].name.substr(0, files[i].name.lastIndexOf('.'));
+				src = URL.createObjectURL(files[i]);
+				newFileList.push({
+					'file': file,
+					'title': title,
+					'src': src
+				});
+			}
 		}
 
 		let originLength = this.state.FileList.length;
@@ -132,7 +137,7 @@ export default class App extends Component {
 			sign: index
 		});
 
-		ID3.loadTags(title, () => {
+		file && ID3.loadTags(title, () => {
 			let tags = ID3.getAllTags(title);
 			let image = tags.picture;
 			if (image) {
@@ -178,7 +183,6 @@ export default class App extends Component {
 		this.setState((prevState) => ({
 			isMedia: !prevState .isMedia
 		}));
-		console.log(this.state.isMedia);
 		// Recorder.init();
 		// console.log(Recorder);
 	}
@@ -195,20 +199,21 @@ export default class App extends Component {
 			mediaStyle += 'slide-down';
 		return (
 			<div className="container" onClick={this.isSlide}>
-				<div className={'media-index' + mediaStyle}>
-					<List sign={this.state.sign} items={this.state.FileList} 
+				<List sign={this.state.sign} items={this.state.FileList} 
 	        			restart={this.restart} isLayin={this.state.isLayinList}
 	        		/>
-	        		<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}
+	        	<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}
         				switchOriginCanvas={this.switchOriginCanvas}/>
+				<div className={'media-index' + mediaStyle}>
 					<Player audio={this.audio} audioCtx={AudioCtx} offDragModal={this.offDragModal}
 							album={this.state.album} title={this.state.title} artist={this.state.artist}
 							sign={this.state.sign} listLength={this.state.FileList.length}
 							restart={this.restart}
 					/>
 				</div>
-				<div className={'media-speaker' + mediaStyle}>
-					<Speaker Recorder={Recorder}/>
+				<div className={'media-speaker' + mediaStyle} onClick={this.stop}>
+					<Speaker Recorder={Recorder} filesAdd={this.filesAdd} Audio={this.audio}
+						switchMedia={this.switchMedia}/>
 				</div>
         		<div className="maintain" onDragEnter={this.onDragModal}>
         			<div className={wrapStyle} onClick={this.switchMedia}>
@@ -227,7 +232,7 @@ export default class App extends Component {
 				</div>
 				<div className={this.state.isDragEnter ? 'drag-component show' : 'drag-component'} 
 					onDragOver={this.onDragover} onDrop={this.offDragModal} onClick={this.stop}>
-		        	<input type="file" multiple="multiple" onChange={this.filesChange}/>
+		        	<input type="file" multiple="multiple" onChange={this.filesAdd}/>
 				</div>
       		</div>
 		);

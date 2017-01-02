@@ -9,16 +9,21 @@ export default class SpeakerComponent extends Component {
 		super(props);
 		this.Recorder = this.props.Recorder;
 
+		this.restart = this.restart.bind(this);
+		this.finish = this.finish.bind(this);
 		this.record = this.record.bind(this);
 	}
 	restart() {
-
+		this.props.Audio.currentTime = 0;
+		this.Recorder.init(this.props.filesAdd);
 	}
-	finish() {
-
+	finish(event) {
+		this.Recorder.stop();
+		this.props.switchMedia(event);
 	}
 	record() {
-		this.Recorder.init();
+		this.props.Audio.currentTime = 0;
+		this.Recorder.init(this.props.filesAdd);
 	}
 	render() {
 		return (
@@ -31,7 +36,7 @@ export default class SpeakerComponent extends Component {
 						结束
 					</a>
 					<a href="javascript:void(0)" className="fa fa-microphone btn-speaker"
-						onClick={this.record}>
+						title="开始录音" onClick={this.record}>
 					</a>
 				</div>		
 			</div>

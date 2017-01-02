@@ -5,6 +5,7 @@
 		width: 250px;
 		height: $height;
 		color: #fff;
+		position: relative;
 		a {
 			display: block;
 			text-align: center;
@@ -14,9 +15,19 @@
 			float: left;
 		}
 		.btn-speaker {
+			$size: 70px;
+			width: $size;
+			height: $size;
 			display: block;
-			line-height: $height; 
-			font-size: 25px;
+			font-size: 35px;
+			border-radius: 50%;
+			line-height: $size + 10px;
+			position: absolute;
+			background: #0C2326;
+			left: 50%;
+			top: -50%;
+			margin-left: -$size / 2;
+			// margin-top: -$size;
 		}
 		.btn-over {
 			float: right;

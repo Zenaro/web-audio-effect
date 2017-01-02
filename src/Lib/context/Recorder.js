@@ -1,12 +1,12 @@
 module.exports = {
 	mediaRecorder: null,
+	src: null,
 	chunks: [],
-	init: function() {
+	init: function(filesAdd) {
 		navigator.getUserMedia = navigator.getUserMedia ||
 			navigator.webkitGetUserMedia ||
 			navigator.mozGetUserMedia;
 		if (navigator.getUserMedia) {
-			console.log('getUserMedia supported.');
 			navigator.getUserMedia({
 				audio: true
 			}, (stream) => {
@@ -21,17 +21,20 @@ module.exports = {
 						'type': 'audio/ogg; codecs=opus'
 					})
 					let audioURL = window.URL.createObjectURL(blob);
-					// this.audio.src = audioURL;
+					filesAdd(e, {'file': null, 'title': clipName, 'src': audioURL});
 				}
 			}, (err) => {
 				console.log('The following gUM error occured: ' + err);
 			});
 
 		} else {
-			console.log('getUserMedia not supported on your browser');
+			alert('您的浏览器未支持麦克风');
 		}
 	},
 	stop: function() {
 		this.mediaRecorder.stop();
+	},
+	getSrc: function() {
+		return this.src;
 	}
 }
