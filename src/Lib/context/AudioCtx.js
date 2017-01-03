@@ -4,7 +4,7 @@
  *	3. Create effects nodes, such as reverb, biquad filter, panner, compressor
  *	4. Choose final destination of audio, for example your system speakers
  *	5. Connect the sources up to the effects, and the effects to the destination.
- *	https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API 图
+ *	
  *  使用BiquadFilterNode调整音色（大量滤波器）、
  *  使用ChannelSplitterNode分割左右声道、
  *  使用GainNode调整增益值实现音乐淡入淡出。
@@ -37,13 +37,6 @@ module.exports = {
 		this.source.connect(this.gainNode);
 		this.gainNode.connect(this.analyser);
 		this.analyser.connect(this.audioCtx.destination);
-	},
-
-	/*
-	 * 获取 Audio对象
-	 */
-	getAudio: function() {
-		return this.audio;
 	},
 
 	/*

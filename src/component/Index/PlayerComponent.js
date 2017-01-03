@@ -37,7 +37,7 @@ export default class PlayerComponent extends Component {
 			}],
 		}
 		this.isDrag = false;
-		this.Audio = props.audio;
+		this.Audio = props.AudioCtx.audio;
 		this.stop = this.stop.bind(this);
 		this.leave = this.leave.bind(this);
 		this.prevTrack = this.prevTrack.bind(this);
@@ -167,10 +167,10 @@ export default class PlayerComponent extends Component {
 	switchPlay() {
 		// 音量的淡入淡出，替换原先简单的暂停
 		if (this.state.isPlaying) {
-			this.props.audioCtx.layoutSound();
+			this.props.AudioCtx.layoutSound();
 
 		} else {
-			this.props.audioCtx.layinSound();
+			this.props.AudioCtx.layinSound();
 		}
 		this.setState((prevState) => ({
 			isPlaying: !prevState.isPlaying

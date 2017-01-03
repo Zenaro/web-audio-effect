@@ -7,8 +7,9 @@ import '../../style/index/speaker.scss';
 export default class SpeakerComponent extends Component {
 	constructor(props) {
 		super(props);
-		this.Recorder = this.props.Recorder;
-		this.Audio = this.props.Audio;
+		this.Recorder = props.Recorder;
+		this.AudioCtx = props.AudioCtx;
+		this.Audio = props.AudioCtx.audio;
 
 		this.restart = this.restart.bind(this);
 		this.finish = this.finish.bind(this);
@@ -35,14 +36,15 @@ export default class SpeakerComponent extends Component {
 			isRecording: true
 		});
 		this.Audio.currentTime = 0;
-		this.Recorder.init(this.props.filesAdd);
-		this.props.AudioCtx.layinSound();
-		this.props.AudioCtx.removeVocal();
+		this.Recorder.init(this.props.AudioCtx, this.props.filesAdd);
+		this.AudioCtx.layinSound();
+		this.AudioCtx.removeVocal();
 	}
 	finish(event) {
 		this.setState({
 			isRecording: false
 		});
+		this.AudioCtx.cancelEffect();
 		this.Recorder.stop();
 		this.props.switchMedia(event);
 	}
@@ -51,9 +53,9 @@ export default class SpeakerComponent extends Component {
 			isRecording: true
 		});
 		this.Audio.currentTime = 0;
-		this.Recorder.init(this.props.filesAdd);
-		this.props.AudioCtx.layinSound();
-		this.props.AudioCtx.removeVocal();
+		this.Recorder.init(this.props.AudioCtx, this.props.filesAdd);
+		this.AudioCtx.layinSound();
+		this.AudioCtx.removeVocal();
 	}
 	parseClock(num) {
 		let min = ~~(num / 60);

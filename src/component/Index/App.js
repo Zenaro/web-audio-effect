@@ -14,14 +14,11 @@ import Player from './PlayerComponent';
 import Speaker from './SpeakerComponent';
 
 AudioCtx.init();
-const Audio = AudioCtx.getAudio();
-const OriginAnalyser = AudioCtx.getOriginAnalyser();
-const AudioAnalyser = AudioCtx.getAnalyser();
 
 export default class App extends Component {
 	constructor(props) {
 		super(props);
-		this.audio = Audio;
+		this.audio = AudioCtx.audio;
 		this.state = {
 			album: '',
 			title: '',
@@ -44,8 +41,8 @@ export default class App extends Component {
 		this.switchMedia = this.switchMedia.bind(this);
 	}
 	componentDidMount() {
-		this.OriginCanvas = new CanvasCtx(this.DOMOriginCanvas, OriginAnalyser);
-		this.Canvas = new CanvasCtx(this.DOMCanvas, AudioAnalyser);
+		this.OriginCanvas = new CanvasCtx(this.DOMOriginCanvas, AudioCtx.getOriginAnalyser());
+		this.Canvas = new CanvasCtx(this.DOMCanvas, AudioCtx.getAnalyser());
 		this.setState({
 			isLayinList: true,
 			isLayinEffect: true
@@ -119,7 +116,7 @@ export default class App extends Component {
 				this.restart(originLength);
 
 			} else {
-				alert('The files you dragged may no be the audio');
+				alert('您所选择的文件不属于音频文件');
 			}
 		});
 	}
@@ -207,14 +204,14 @@ export default class App extends Component {
 	        	<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}
         				switchOriginCanvas={this.switchOriginCanvas}/>
 				<div className={'media-index' + mediaStyle}>
-					<Player audio={this.audio} audioCtx={AudioCtx} offDragModal={this.offDragModal}
+					<Player AudioCtx={AudioCtx} offDragModal={this.offDragModal}
 							album={this.state.album} title={this.state.title} artist={this.state.artist}
 							sign={this.state.sign} listLength={this.state.FileList.length}
 							restart={this.restart}
 					/>
 				</div>
 				<div className={'media-speaker' + mediaStyle} onClick={this.stop}>
-					<Speaker Recorder={Recorder} filesAdd={this.filesAdd} Audio={this.audio}
+					<Speaker Recorder={Recorder} filesAdd={this.filesAdd}
 						AudioCtx={AudioCtx} switchMedia={this.switchMedia}/>
 				</div>
         		<div className="maintain" onDragEnter={this.onDragModal}>
