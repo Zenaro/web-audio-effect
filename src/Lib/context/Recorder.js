@@ -4,6 +4,9 @@ module.exports = {
 	src: null,
 	chunks: [],
 	init: function(AudioCtx, filesAdd) {
+		if (typeof filesAdd != 'function') {
+			throw new Error("Recorder.init(): The second argument must be a function");
+		}
 		navigator.getUserMedia = navigator.getUserMedia ||
 			navigator.webkitGetUserMedia ||
 			navigator.mozGetUserMedia;
@@ -24,6 +27,7 @@ module.exports = {
 						'type': 'audio/ogg; codecs=opus'
 					})
 					let audioURL = window.URL.createObjectURL(blob);
+					console.log(audioURL);
 					filesAdd(e, {'file': null, 'title': clipName, 'src': audioURL});
 					this.source.disconnect(0);
 				}

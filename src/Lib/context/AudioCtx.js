@@ -77,7 +77,7 @@ module.exports = {
 		this.gainNode.gain.linearRampToValueAtTime(0, currentTime + this.sec);
 		setTimeout(() => {
 			this.audio.pause();
-		}, this.sec * 500); // 延时
+		}, this.sec * 800); // 延时
 	},
 
 	/*

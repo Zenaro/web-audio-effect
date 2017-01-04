@@ -122,6 +122,9 @@ export default class PlayerComponent extends Component {
 		this.isDrag = false;
 	}
 	parseClock(num) {
+		if (typeof num != 'number') {
+			throw new Error("parseClock(): Argument must be a number");
+		}
 		let min = ~~(num / 60);
 		let sec = ~~(num % 60);
 		if (min < 10) {

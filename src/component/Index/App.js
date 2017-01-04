@@ -126,6 +126,9 @@ export default class App extends Component {
 		}));
 	}
 	restart(index) {
+		if (typeof index != 'number') {
+			throw new Error("App.js restart(): Argument must be a number");
+		}
 		let title = this.state.FileList[index].title,
 			file = this.state.FileList[index].file;
 
@@ -180,6 +183,8 @@ export default class App extends Component {
 		if (!this.audio.src) return;
 		if (!this.state.isMedia) {
 			AudioCtx.layoutSound();
+		} else {
+			AudioCtx.cancelEffect();
 		}
 		this.setState((prevState) => ({
 			isMedia: !prevState .isMedia

@@ -22,20 +22,21 @@ export default class SpeakerComponent extends Component {
 		}
 	}
 	componentDidMount() {
-		this.Audio.ontimeupdate = () => {
+		this.Audio.currentTime = 0;
+		this.Audio.addEventListener('timeupdate', () => {
 			let pct = ~~(this.Audio.currentTime / this.Audio.duration * 1000) / 10;
 			this.setState({
 				playingPct: pct,
 				currentTime: this.Audio.currentTime,
 				duration: this.Audio.duration
 			});
-		}
+		}, false);
 	}
 	restart() {
+		this.Audio.currentTime = 0;
 		this.setState({
 			isRecording: true
 		});
-		this.Audio.currentTime = 0;
 		this.Recorder.init(this.props.AudioCtx, this.props.filesAdd);
 		this.AudioCtx.layinSound();
 		this.AudioCtx.removeVocal();
@@ -44,20 +45,22 @@ export default class SpeakerComponent extends Component {
 		this.setState({
 			isRecording: false
 		});
-		this.AudioCtx.cancelEffect();
 		this.Recorder.stop();
 		this.props.switchMedia(event);
 	}
 	record() {
+		this.Audio.currentTime = 0;
 		this.setState({
 			isRecording: true
 		});
-		this.Audio.currentTime = 0;
 		this.Recorder.init(this.props.AudioCtx, this.props.filesAdd);
 		this.AudioCtx.layinSound();
 		this.AudioCtx.removeVocal();
 	}
 	parseClock(num) {
+		if (typeof num != 'number') {
+			throw new Error("parseClock(): Argument must be a number");
+		}
 		let min = ~~(num / 60);
 		let sec = ~~(num % 60);
 		if (min < 10) {
