@@ -11,18 +11,8 @@ export default class ListComponent extends Component {
 		// 	isLayin: props.isLayin
 		// };
 	}
-	componentDidMount() {
-		// this.setState({
-		// 	isLayin: this.props.isLayin
-		// });
-	}
 	stop(event) {
 		event.stopPropagation();
-	}
-	switchList() {
-		// this.setState((prevState) => ({
-		// 	isLayin: prevState.isLayin
-		// }));
 	}
 	handleTouch(index) {
 		this.props.restart(index);
