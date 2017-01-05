@@ -18,7 +18,7 @@ export default class EffectComponent extends Component {
 			isDropdownLowpass: false,
 			isDropdownHighpass: false
 		}
-		this.AudioCtx = this.props.AudioCtx;
+		this.AudioCtx = props.AudioCtx;
 		this.reset = this.reset.bind(this);
 
 		this.cancelEffect = this.cancelEffect.bind(this);
