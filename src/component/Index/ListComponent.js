@@ -5,12 +5,6 @@ import React, {
 import '../../style/index/list.scss';
 
 export default class ListComponent extends Component {
-	constructor(props) {
-		super(props);
-		// this.state = {
-		// 	isLayin: props.isLayin
-		// };
-	}
 	stop(event) {
 		event.stopPropagation();
 	}
