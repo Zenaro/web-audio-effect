@@ -5,7 +5,7 @@
  *	4. Choose final destination of audio, for example your system speakers
  *	5. Connect the sources up to the effects, and the effects to the destination.
  *	
- *  使用BiquadFilterNode调整音色（大量滤波器）、
+ *  使用BiquadFilterNode调整音色（滤波器）、
  *  使用ChannelSplitterNode分割左右声道、
  *  使用GainNode调整增益值实现音乐淡入淡出。
  */
@@ -372,14 +372,9 @@ module.exports = {
 		this.disconnect();
 		let lGain = this.audioCtx.createGain();
 		let rGain = this.audioCtx.createGain();
-		//创建声道离合器
+		// 声道离合器
 		let splitter = this.audioCtx.createChannelSplitter(2);
 		let merger = this.audioCtx.createChannelMerger(2);
-		/*
-		                 → lGain
-		source → splitter         → merger → destination
-		                 → rGain
-		*/
 		lGain.gain.value = 1;
 		rGain.gain.value = 1;
 
