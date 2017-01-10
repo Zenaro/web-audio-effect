@@ -239,8 +239,6 @@ module.exports = {
 
 		channelMerger.connect(gain3);
 		gain3.connect(this.audioCtx.destination);
-		// gain3.connect(this.analyser);
-		// this.analyser.connect(this.audioCtx.destination);
 	},
 
 	/*
