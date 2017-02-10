@@ -187,7 +187,7 @@ export default class App extends Component {
 			AudioCtx.cancelEffect();
 		}
 		this.setState((prevState) => ({
-			isMedia: !prevState .isMedia
+			isMedia: !prevState.isMedia
 		}));
 	}
 	render() {
@@ -199,7 +199,7 @@ export default class App extends Component {
 		this.state.isOriginCanvas ?
 			originCanvasStyle += 'fadeIn' : '';
 		this.state.isMedia ?
-			mediaStyle += 'slide-up' : 
+			mediaStyle += 'slide-up' :
 			mediaStyle += 'slide-down';
 		return (
 			<div className="container" onClick={this.isSlide}>
