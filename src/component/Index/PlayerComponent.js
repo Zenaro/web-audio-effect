@@ -230,7 +230,8 @@ export default class PlayerComponent extends Component {
 		let path = event.nativeEvent.path,
 			PlayerOffsetTop = 0;
 		for (let i = 0; i < path.length; i++) {
-			if (path[i].className === 'audio-player') {
+			if (path[i].className.indexOf('media-index') >= 0) {
+				console.log(path[i].className);
 				PlayerOffsetTop = path[i].offsetTop;
 				break;
 			}

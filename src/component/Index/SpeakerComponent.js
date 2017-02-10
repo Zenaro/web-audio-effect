@@ -86,7 +86,7 @@ export default class SpeakerComponent extends Component {
 						重唱
 					</a>
 					<a href="javascript:void(0)" className="btn-over" onClick={this.finish}>
-						结束
+						完成
 					</a>
 					<a href="javascript:void(0)" className="fa fa-microphone btn-speaker"
 						title="开始录音" onClick={this.record}>
