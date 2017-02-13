@@ -203,7 +203,7 @@ export default class App extends Component {
 			mediaStyle += 'slide-down';
 		return (
 			<div className="container" onClick={this.isSlide}>
-				<List sign={this.state.sign} items={this.state.FileList} 
+				<List sign={this.state.sign} items={this.state.FileList} filesAdd={this.filesAdd}
 	        			restart={this.restart} isLayin={this.state.isLayinList}
 	        		/>
 	        	<Effect AudioCtx={AudioCtx} isLayin={this.state.isLayinEffect}
@@ -227,10 +227,10 @@ export default class App extends Component {
 							<img src={this.state.album} className="album" alt="album"/>
         				}
         			</div>
-		    		<canvas className={originCanvasStyle} 
+		    		<canvas className={originCanvasStyle}
 		    			ref={(canvas) => {this.DOMOriginCanvas = canvas}}>
 		    		</canvas>
-		    		<canvas className="canvas" 
+		    		<canvas className="canvas"
 		    			ref={(canvas) => {this.DOMCanvas = canvas}}>
 		    		</canvas>
 				</div>

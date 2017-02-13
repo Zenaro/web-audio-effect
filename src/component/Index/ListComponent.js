@@ -23,6 +23,16 @@ export default class ListComponent extends Component {
 				<a href="javascript:void(0)" className="btn-list">
 					<i className="icon-list"></i>
 				</a>
+				<div className="file-control">
+					<p>添加音乐文件 + </p>
+					<input type="file" mutiple="multiple" onChange={this.props.filesAdd}/>
+				</div>
+				{this.props.items.length <= 0 &&
+					<div className="empty">
+						<p>播放列表为空~</p>
+						<p>尝试把音乐文件拖拽进来吧</p>
+					</div>
+				}
 				<ul>
 					{this.props.items.map((item, index) => {
 						return <li key={index} className={this.props.sign === index ? 'active' : ''} onDoubleClick={this.handleTouch.bind(this, index)}>
@@ -32,12 +42,6 @@ export default class ListComponent extends Component {
 								</li>
 					})}
 				</ul>
-				{this.props.items.length <= 0 &&
-					<div className="empty">
-						<p>播放列表为空~</p>
-						<p>尝试把音乐文件拖拽进来吧</p>
-					</div>
-				}
 			</div>
 		);
 	}

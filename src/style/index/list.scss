@@ -32,6 +32,22 @@
 			}
 		}
 	}
+	.file-control {
+		position: relative;
+		input {
+			opacity: 0;
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+
+		}
+	}
+	.empty {
+		p {
+			margin: 15px 10px;
+		}
+	}
 	ul > li {
 		border: solid 2px rgba(26, 198, 217, 0);
 		&.active {
@@ -47,11 +63,6 @@
 			&.active, &:hover { 
 				color: #fff;
 			}
-		}
-	}
-	.empty {
-		p {
-			margin: 15px 10px;
 		}
 	}
 	&.slide-in {
