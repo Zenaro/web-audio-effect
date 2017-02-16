@@ -116,7 +116,7 @@ export default class App extends Component {
 				this.restart(originLength);
 
 			} else {
-				alert('您所选择的文件不属于音频文件');
+				alert('您所选择的文件不属于音频文件\n或浏览器不支持该文件格式，\n换一首试试吧');
 			}
 		});
 	}
