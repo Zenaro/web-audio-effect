@@ -15,7 +15,7 @@ export default class EffectComponent extends Component {
 			highpassHz: 800, // 默认800Hz
 			maxRadius: 100, // 最大Hz
 			maxHz: 3600, // 最大Hz
-			isDropdownLowpass: false,
+			isDropdownLowpass: false, //下拉状态 
 			isDropdownHighpass: false
 		}
 		this.AudioCtx = props.AudioCtx;
