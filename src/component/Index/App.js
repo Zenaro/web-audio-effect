@@ -36,6 +36,7 @@ export default class App extends Component {
 		this.isSlide = this.isSlide.bind(this);
 		this.onDragModal = this.onDragModal.bind(this);
 		this.offDragModal = this.offDragModal.bind(this);
+		this.fileDragEnter = this.fileDragEnter.bind(this);
 		this.filesAdd = this.filesAdd.bind(this);
 		this.switchOriginCanvas = this.switchOriginCanvas.bind(this);
 		this.switchMedia = this.switchMedia.bind(this);
@@ -69,17 +70,31 @@ export default class App extends Component {
 			isDragEnter: true
 		});
 	}
-	onDragover(event) {
-		event.preventDefault();
-	}
 	offDragModal() {
 		this.setState({
 			isDragEnter: false
 		});
 	}
+	fileDragEnter() {
+		console.log('enter');
+	}
+	fileDragOver(event) {
+		const e = event || window.event;
+		console.log('over');
+		console.log(e);
+	}
+	fileDrop(event) {
+		const e = event || window.event;
+		e.preventDefault();
+		e.stopPropagation();
+	}
+	fileDragLeave() {
+		console.log('leave');
+	}
 	filesAdd(event, file) {
 		let newFileList = [];
 		if (file) {
+			console.log(file);
 			newFileList.push(file);
 
 		} else {
@@ -235,8 +250,8 @@ export default class App extends Component {
 		    		</canvas>
 				</div>
 				<div className={this.state.isDragEnter ? 'drag-component show' : 'drag-component'} 
-					onDragOver={this.onDragover} onDrop={this.offDragModal} onClick={this.stop}>
-		        	<input type="file" multiple="multiple" onChange={this.filesAdd}/>
+					onDragEnter={this.fileDragEnter} onDragOver={this.fileDragOver} onDrop={this.fileDrop} onDragLeave={this.fileDragLeave}>
+		        	// <input type="file" multiple="multiple" onChange={this.filesAdd}/>
 				</div>
       		</div>
 		);
