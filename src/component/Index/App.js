@@ -113,7 +113,7 @@ export default class App extends Component {
 			this.setState({
 				isDragEnter: false
 			});
-			let files = event.dataTransfer.files;
+			let files = event.dataTransfer.files || event.target.files;
 
 			for (let i = files.length - 1, file = null, title = '', src = ''; i >= 0; i--) {
 				if (files[i].type.indexOf('audio') < 0) continue;
