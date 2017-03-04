@@ -37,6 +37,8 @@ export default class App extends Component {
 		this.onDragModal = this.onDragModal.bind(this);
 		this.offDragModal = this.offDragModal.bind(this);
 		this.fileDragEnter = this.fileDragEnter.bind(this);
+		this.fileDrop = this.fileDrop.bind(this);
+		this.fileDragLeave = this.fileDragLeave.bind(this);
 		this.filesAdd = this.filesAdd.bind(this);
 		this.switchOriginCanvas = this.switchOriginCanvas.bind(this);
 		this.switchMedia = this.switchMedia.bind(this);
@@ -79,17 +81,21 @@ export default class App extends Component {
 		console.log('enter');
 	}
 	fileDragOver(event) {
-		const e = event || window.event;
-		console.log('over');
-		console.log(e);
+
 	}
 	fileDrop(event) {
 		const e = event || window.event;
 		e.preventDefault();
 		e.stopPropagation();
+		this.setState({
+			isDragEnter: false
+		});
+		this.filesAdd(e);
 	}
 	fileDragLeave() {
-		console.log('leave');
+		this.setState({
+			isDragEnter: false
+		});
 	}
 	filesAdd(event, file) {
 		let newFileList = [];
@@ -101,7 +107,8 @@ export default class App extends Component {
 			this.setState({
 				isDragEnter: false
 			});
-			let files = event.target.files;
+			console.log(event.target.files);
+			let files = event.dataTransfer.files;
 
 			for (let i = files.length - 1, file = null, title = '', src = ''; i >= 0; i--) {
 				if (files[i].type.indexOf('audio') < 0) continue;
