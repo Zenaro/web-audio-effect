@@ -77,16 +77,23 @@ export default class App extends Component {
 			isDragEnter: false
 		});
 	}
-	fileDragEnter() {
-		console.log('enter');
+	fileDragEnter(event) {
+		event.preventDefault();
+		event.stopPropagation();
 	}
 	fileDragOver(event) {
-
+		event.preventDefault();
+		event.stopPropagation();
 	}
 	fileDrop(event) {
-		const e = event || window.event;
+		var e = event || window.event;
 		e.preventDefault();
+
+		// 阻止火狐打开新窗口
+		// react的stopPropagation只阻止部分事件，需要加上stopImmediatePropagation
 		e.stopPropagation();
+		e.nativeEvent.stopImmediatePropagation();
+
 		this.setState({
 			isDragEnter: false
 		});
@@ -99,15 +106,13 @@ export default class App extends Component {
 	}
 	filesAdd(event, file) {
 		let newFileList = [];
-		if (file) {
-			console.log(file);
+		if (file) { // recorder 用
 			newFileList.push(file);
 
 		} else {
 			this.setState({
 				isDragEnter: false
 			});
-			console.log(event.target.files);
 			let files = event.dataTransfer.files;
 
 			for (let i = files.length - 1, file = null, title = '', src = ''; i >= 0; i--) {
