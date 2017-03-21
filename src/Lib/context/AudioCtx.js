@@ -1,4 +1,5 @@
 /*
+ * 总体思路：
  * 	1. Create audio context
  *	2. Inside the context, create sources — such as <audio>, oscillator, stream
  *	3. Create effects nodes, such as reverb, biquad filter, panner, compressor
